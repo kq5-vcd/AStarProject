@@ -1,4 +1,4 @@
-package Algorithm;
+package Node;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,9 @@ import java.util.Set;
 
 public class Node implements Comparable<Node> {
 	
-	private static enum Status {
+	protected static enum Status {
 	    BLANK,
+	    BLOCKED,
 	    CHECKED,
 	    USED,
 	    START,
@@ -15,39 +16,51 @@ public class Node implements Comparable<Node> {
 	}
 	
 	private Node goFrom;
-	private Map<Node, Float> to = new HashMap<Node, Float>();
+	private Map<Node, Double> to = new HashMap<Node, Double>();
 	
 	private String title;
+	private double x;
+	private double y;
 	
-	private float currentValue;
-	private float endDistance;
-	private float heuristic;
+	private double currentValue;
+	private double endDistance;
+	private double heuristic;
 	private Status status;
 	
-	public Node(String title, float endDistance) {
+	public Node(double x, double y) {
 		super();
-		this.title = title;
+		this.x = x;
+		this.y = y;
+	}
+	
+	public Node(double endDistance) {
+		super();
 		this.currentValue = 0;
 		this.endDistance = endDistance;
 		this.setStatus(Status.BLANK);
 		
 	}
+	
+	public Node(String title, double endDistance) {
+		this(endDistance);
+		this.title = title;
+	}
 
-	public float getCurrentValue() {
+	public double getCurrentValue() {
 		return currentValue;
 	}
 
-	public void setCurrentValue(float currentValue) {
+	public void setCurrentValue(double currentValue) {
 		if(this.currentValue > currentValue || this.currentValue == 0) {
 			this.currentValue = currentValue;
 		}
 	}
 
-	public float getEndDistance() {
+	public double getEndDistance() {
 		return endDistance;
 	}
 
-	public float getHeuristic() {
+	public double getHeuristic() {
 		return heuristic;
 	}
 
@@ -67,7 +80,7 @@ public class Node implements Comparable<Node> {
 		return to.keySet();
 	}
 
-	public void setTo(Node node, float value) {
+	public void setTo(Node node, double value) {
 		to.put(node, value);
 	}
 
@@ -79,15 +92,45 @@ public class Node implements Comparable<Node> {
 		this.status = status;
 	}
 	
-	public float getPathValue(Node node) {
+	public double getX() {
+		return x;
+	}
+	
+	public void setX(double x) {
+		this.x = x;
+	}
+	
+	public double getY() {
+		return y;
+	}
+	
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	public double getDistance(Node node) {
+		double nX = node.getX();
+		double nY = node.getY();
+		
+		double xDiff = x - nX;
+		double yDiff = y - nY;
+		
+		return Math.abs(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+	}
+	
+	public double getPathValue(Node node) {
 		return to.get(node);
 	}
 	
-	public void checkNode(Node from, float value) {
+	public void checkNode(Node from, double value) {
 		if(isEnd()) {
 			setGoFrom(from);
 			heuristic = -1;
-		} else if(currentValue > value || currentValue == 0) {
+		} else if(isStart()) {
+			heuristic = Math.pow(10, 5);
+		}
+		
+		else if(currentValue > value || currentValue == 0) {
 			setGoFrom(from);
 			
 			setCurrentValue(value);
@@ -104,8 +147,8 @@ public class Node implements Comparable<Node> {
 		return status == Status.END;
 	}
 
-	public boolean isChecked() {
-		return status == Status.CHECKED;
+	public boolean isBlank() {
+		return status == Status.BLANK;
 	}
 	
 	public void check() {
@@ -121,10 +164,18 @@ public class Node implements Comparable<Node> {
 	public void setEnd() {
 		status = Status.END;
 	}
+	
+	public void setBlank() {
+		status = Status.BLANK;
+	}
+	
+	public void useNode() {
+		status = Status.USED;
+	}
 
 	@Override
 	public int compareTo(Node node) {
-		float result = this.getHeuristic() - node.getHeuristic();
+		double result = this.getHeuristic() - node.getHeuristic();
 		
 		if(result > 0) {
 			return 1;

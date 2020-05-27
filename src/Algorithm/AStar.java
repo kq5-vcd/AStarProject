@@ -5,17 +5,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import Node.Node;
+
 public class AStar {
 	
     public static void reconstructPath(Node node) {
     	List<Node> path = new ArrayList<Node>();
     	
     	while(!node.isStart()) {
-    		System.out.println(node);
+    		//System.out.println(node);
+    		node.useNode();
     		path.add(0, node);
     		node = node.getGoFrom();
     	}
     	
+    	node.useNode();
     	path.add(0, node);
     	
     	for(Node step: path) {
@@ -31,16 +35,17 @@ public class AStar {
     	node.check();
     	
     	for(Node path: paths) {
-    		boolean add = true;
-    		if(path.isChecked()) {
-        		add = false;
+    		boolean add = false;
+    		
+    		if(path.isBlank() || path.isEnd()) {
+        		add = true;
     		}
     		
-    		float value = node.getPathValue(path) + node.getCurrentValue();
+    		double value = node.getPathValue(path) + node.getCurrentValue();
     		path.checkNode(node, value);
     		
     		if(add) {
-    			System.out.println(path);
+    			//System.out.println(path);
         		expandedPaths.add(path);
     		}
     	}
@@ -54,7 +59,7 @@ public class AStar {
     	queue.add(start);
     	while(true) {
     		Node node = queue.get(0);
-    		System.out.println("A* " + node);
+    		//System.out.println("A* " + node);
     		queue.remove(0);
     		
     		if(node.isEnd()) {
