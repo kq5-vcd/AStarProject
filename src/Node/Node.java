@@ -11,39 +11,40 @@ public class Node implements Comparable<Node> {
 	    BLOCKED,
 	    CHECKED,
 	    USED,
-	    START,
-	    END
 	}
+	private static int id = 0;
 	
 	private Node goFrom;
 	private Map<Node, Double> to = new HashMap<Node, Double>();
 	
-	private String title;
 	private double x;
 	private double y;
+	
+	private int nodeId;
 	
 	private double currentValue;
 	private double endDistance;
 	private double heuristic;
 	private Status status;
 	
-	public Node(double x, double y) {
+	private boolean startNode = false;
+	private boolean endNode = false;
+	
+	public Node() {
 		super();
+		this.nodeId = id++;
+		this.currentValue = 0;
+		setBlank();
+	}
+	
+	public Node(double x, double y) {
+		this();
 		this.x = x;
 		this.y = y;
 	}
 	
-	public Node(double endDistance) {
-		super();
-		this.currentValue = 0;
-		this.endDistance = endDistance;
-		this.setStatus(Status.BLANK);
-		
-	}
-	
-	public Node(String title, double endDistance) {
-		this(endDistance);
-		this.title = title;
+	public int getNodeId() {
+		return nodeId;
 	}
 
 	public double getCurrentValue() {
@@ -58,6 +59,14 @@ public class Node implements Comparable<Node> {
 
 	public double getEndDistance() {
 		return endDistance;
+	}
+	
+	public void setEndDistance(double endDistance) {
+		this.endDistance = endDistance;
+	}
+	
+	public void setEndDistance(Node end) {
+		this.endDistance = getDistance(end);
 	}
 
 	public double getHeuristic() {
@@ -83,11 +92,15 @@ public class Node implements Comparable<Node> {
 	public void setTo(Node node, double value) {
 		to.put(node, value);
 	}
+	
+	public void setTo(Node node) {
+		to.put(node, getDistance(node));
+	}
 
 	public Status getStatus() {
 		return status;
 	}
-
+	
 	public void setStatus(Status status) {
 		this.status = status;
 	}
@@ -125,52 +138,66 @@ public class Node implements Comparable<Node> {
 	public void checkNode(Node from, double value) {
 		if(isEnd()) {
 			setGoFrom(from);
+			
 			heuristic = -1;
 		} else if(isStart()) {
 			heuristic = Math.pow(10, 5);
-		}
-		
-		else if(currentValue > value || currentValue == 0) {
+		} else if(currentValue > value || currentValue == 0) {
 			setGoFrom(from);
 			
 			setCurrentValue(value);
 			setHeuristic();
-			setStatus(Status.CHECKED);
+			check();
 		}
 	}
+	
+	public void setStart() {
+		startNode = true;
+	}
 
+	public void setEnd() {
+		endNode = true;
+	}
+
+	
 	public boolean isStart() {
-		return status == Status.START;
+		return startNode;
 	}
 
 	public boolean isEnd() {
-		return status == Status.END;
+		return endNode;
 	}
 
 	public boolean isBlank() {
 		return status == Status.BLANK;
 	}
 	
-	public void check() {
-		if(!isStart()) {
-			status = Status.CHECKED;
-		}
-	}
-	
-	public void setStart() {
-		status = Status.START;
-	}
-	
-	public void setEnd() {
-		status = Status.END;
-	}
-	
 	public void setBlank() {
-		status = Status.BLANK;
+		setStatus(Status.BLANK);
+	}
+	
+	public void check() {
+		setStatus(Status.CHECKED);
+	}
+	
+	public void resetNode() {
+		setBlank();
+		setCurrentValue(0);
+		setEndDistance(0);
+		startNode = false;
+		endNode = false;
 	}
 	
 	public void useNode() {
-		status = Status.USED;
+		setStatus(Status.USED);
+	}
+	
+	public boolean equals(Node node) {
+		if(nodeId == node.getNodeId()) {
+			return true;
+		}
+			
+		return false;
 	}
 
 	@Override
@@ -188,7 +215,7 @@ public class Node implements Comparable<Node> {
 	
 	@Override
 	public String toString() {
-		return title;
+		return "" + nodeId;
 	}
 	
 }

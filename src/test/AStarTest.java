@@ -6,47 +6,45 @@ import Node.Node;
 public class AStarTest {
 
 	public static void main(String[] args) {
-		Node start = new Node("Start", 510f);
-		start.setStart();
+		Node start = new Node(200, 300);
 		
-		Node end = new Node("End", 0f);
-		end.setEnd();
+		Node end = new Node(500, 700);
 		
-		Node a1 = new Node("a1", 455f);
-		start.setTo(a1, 192f);
+		Node a1 = new Node(210, 455);
+		start.setTo(a1);
 		
-		Node a2 = new Node("a2", 370.5f);
-		start.setTo(a2, 177f);
+		Node a2 = new Node(100, 370.5);
+		start.setTo(a2);
 		
-		Node a3 = new Node("a3", 389f);
-		start.setTo(a3, 309f);
+		Node a3 = new Node(150, 389);
+		start.setTo(a3);
 		
-		Node b1 = new Node("b1", 360.5f);
+		Node b1 = new Node(200, 360.5);
 		a1.setTo(b1, 186.8f);
 		b1.setTo(end, 360.5f);
 		
-		Node b2 = new Node("b2", 269f);
-		a1.setTo(b2, 111.8f);
-		a2.setTo(b2, 237.7f);
-		b2.setTo(end, 269f);
-		b1.setTo(b2, 128f);
+		Node b2 = new Node(177, 269);
+		a1.setTo(b2);
+		a2.setTo(b2);
+		b2.setTo(end);
+		b1.setTo(b2);
 		
-		Node b3 = new Node("b3", 250.8f);
-		a1.setTo(b3, 264.2f);
-		b3.setTo(end, 250.8f);
-		b2.setTo(b3, 247.6f);
+		Node b3 = new Node(50, 250.8);
+		a1.setTo(b3);
+		b3.setTo(end);
+		b2.setTo(b3);
 		
-		Node b4 = new Node("b4", 291.5f);
-		a2.setTo(b4, 176.9f);
-		b4.setTo(end, 291.5f);
-		b3.setTo(b4, 170f);
+		Node b4 = new Node(333, 291.5f);
+		a2.setTo(b4);
+		b4.setTo(end);
+		b3.setTo(b4);
 		
-		Node b5 = new Node("b5", 308f);
-		a2.setTo(b5, 247f);
-		a3.setTo(b5, 106.3f);
-		b5.setTo(end, 308.f);
+		Node b5 = new Node(400, 308f);
+		a2.setTo(b5);
+		a3.setTo(b5);
+		b5.setTo(end);
 		
-		AStar.AStarSearch(start);
+		AStar.AStarSearch(start, end);
 	}
 
 }

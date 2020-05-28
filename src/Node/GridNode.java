@@ -8,10 +8,6 @@ public class GridNode extends Node {
 		super(x, y);
 	}
 	
-	public void setTo(Node node) {
-		setTo(node, 1);
-	}
-	
 	public void setBlock() {
 		setStatus(Status.BLOCKED);
 	}

@@ -12,15 +12,18 @@ public class AStar {
     public static void reconstructPath(Node node) {
     	List<Node> path = new ArrayList<Node>();
     	
-    	while(!node.isStart()) {
+    	while(true) {
     		//System.out.println(node);
     		node.useNode();
     		path.add(0, node);
+    		
+    		if(node.isStart()) {
+    			break;
+    		}
+    		
+    		node.useNode();
     		node = node.getGoFrom();
     	}
-    	
-    	node.useNode();
-    	path.add(0, node);
     	
     	for(Node step: path) {
     		System.out.print(step + " ");
@@ -28,7 +31,7 @@ public class AStar {
     	System.out.println();
     }
     
-    public static List<Node> expandNode(Node node) {
+    public static List<Node> expandNode(Node node, Node end) {
     	Set<Node> paths = node.getTo();
     	List<Node> expandedPaths = new ArrayList<Node>();
     	
@@ -36,6 +39,7 @@ public class AStar {
     	
     	for(Node path: paths) {
     		boolean add = false;
+    		path.setEndDistance(end);
     		
     		if(path.isBlank() || path.isEnd()) {
         		add = true;
@@ -53,28 +57,34 @@ public class AStar {
     	return expandedPaths;
     }
     
-    public static void AStarSearch(Node start) {
-    	List<Node> queue = new ArrayList<Node>();
-    	
-    	queue.add(start);
-    	while(true) {
-    		Node node = queue.get(0);
-    		//System.out.println("A* " + node);
-    		queue.remove(0);
-    		
-    		if(node.isEnd()) {
-    			reconstructPath(node);
-    			break;
-    		}
-    		
-    		queue.addAll(expandNode(node));
-    		
-    		if(queue.isEmpty()) {
-    			System.out.println("No possible path");
-    			break;
-    		}
-    		
-    		Collections.sort(queue);
+    public static void AStarSearch(Node start, Node end) {
+    	if(start.equals(end)) {
+    		reconstructPath(start);
+    	} else {
+    		List<Node> queue = new ArrayList<Node>();
+    		start.setStart();
+    		end.setEnd();
+        	
+        	queue.add(start);
+        	while(true) {
+        		Node node = queue.get(0);
+        		//System.out.println("A* " + node);
+        		queue.remove(0);
+        		
+        		if(node.isEnd()) {
+        			reconstructPath(node);
+        			break;
+        		}
+        		
+        		queue.addAll(expandNode(node, end));
+        		
+        		if(queue.isEmpty()) {
+        			System.out.println("No possible path");
+        			break;
+        		}
+        		
+        		Collections.sort(queue);
+        	}
     	}
     }
 
