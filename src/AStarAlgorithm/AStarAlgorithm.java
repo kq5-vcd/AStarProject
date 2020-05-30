@@ -13,39 +13,42 @@ public class AStarAlgorithm {
     	List<String> rPath = new ArrayList<String>();
     	List<ANode> path = new ArrayList<ANode>();
     	
-    	while(!node.isStart()) {
-    		//System.out.println(node);
+    	while(true) {
+    		System.out.println(node);
     		path.add(0, node);
+    		if(node.isStart()) break;
+    		node.setUsed();
     		node = node.getGoFrom();
+    		
     	}
     	
-    	path.add(0, node);
     	
     	for(ANode step: path) {
     		System.out.print(step + " ");
-    		rPath.add(step.getTitle());
+    		rPath.add(String.valueOf(step.getNodeId()));
     	}
-    	//System.out.println();
+    	System.out.println();
     	return rPath;
     }
     
-    public static List<ANode> expandNode(ANode node) {
+    public static List<ANode> expandNode(ANode node, ANode end) {
     	Set<ANode> paths = node.getTo();
     	List<ANode> expandedPaths = new ArrayList<ANode>();
     	
     	node.check();
     	
     	for(ANode path: paths) {
-    		boolean add = true;
-    		if(path.isChecked()) {
-        		add = false;
+    		boolean add = false;
+    		path.setEndDistance(end);
+    		if(path.isBlank()||path.isEnd()) {
+        		add = true;
     		}
     		
     		double value = node.getPathValue(path) + node.getCurrentValue();
     		path.checkNode(node, value);
     		
     		if(add) {
-    			//System.out.println(path);
+    			System.out.println(path);
         		expandedPaths.add(path);
     		}
     	}
@@ -53,30 +56,37 @@ public class AStarAlgorithm {
     	return expandedPaths;
     }
     
-    public static boolean AStarSearch(ANode start, List<String> path) {
-    	List<ANode> queue = new ArrayList<ANode>();
-    	
-    	queue.add(start);
-    	while(true) {
-    		ANode node = queue.get(0);
-    		//System.out.println("A* " + node);
-    		queue.remove(0);
-    		
-    		if(node.isEnd()) {
-    			path.clear();
-    			path.addAll(reconstructPath(node));
-    			return true;
-    		}
-    		
-    		queue.addAll(expandNode(node));
-    		
-    		if(queue.isEmpty()) {
-    			//System.out.println("No possible path");
-    			return false;
-    			
-    		}
-    		
-    		Collections.sort(queue);
+    public static boolean AStarSearch(ANode start, ANode end, List<String> path) {
+    	if(start.equals(end)) {
+    		reconstructPath(start);
+    		return true;
+    	}
+    	else {
+	    	List<ANode> queue = new ArrayList<ANode>();
+	    	start.setStart();
+	    	end.setEnd();
+	    	queue.add(start);
+	    	while(true) {
+	    		ANode node = queue.get(0);
+	    		System.out.println("A* " + node);
+	    		queue.remove(0);
+	    		
+	    		if(node.isEnd()) {
+	    			path.clear();
+	    			path.addAll(reconstructPath(node));
+	    			return true;
+	    		}
+	    		
+	    		queue.addAll(expandNode(node, end));
+	    		
+	    		if(queue.isEmpty()) {
+	    			System.out.println("No possible path");
+	    			return false;
+	    			
+	    		}
+	    		
+	    		Collections.sort(queue);
+	    	}
     	}
     }
 

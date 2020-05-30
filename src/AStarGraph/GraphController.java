@@ -147,9 +147,10 @@ public class GraphController {
 	
 	private DisplayGraph graph;
 	
-	private ArrayList<Node> nodeData;
+	private List<Node> nodeData;
 	
 	private double endx, endy, startx, starty;
+	
 	
 	ANode n1 = new ANode("1",0d);
 	ANode n2 = new ANode("2",0d);
@@ -191,15 +192,10 @@ public class GraphController {
 	
 	private ObservableList<Integer> listNode = FXCollections.observableArrayList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
 	
-	public GraphController() {
-		
-	}
 	
-	public void setGraph(DisplayGraph graph, ArrayList<Node> nodeData) {
+	
+	public void setGraph(DisplayGraph graph) {
 		this.graph = graph;
-		this.nodeData = nodeData;
-		
-		
 	}
 	
 	@FXML
@@ -268,13 +264,14 @@ public class GraphController {
 	private boolean getChoiceBox() {
 		int sN = startNode.getSelectionModel().getSelectedItem();
 		//System.out.println(sN);
-		if(sN == 0) {
+		//if(sN != 1 && sN != 2 && sN != 3 && sN != 4 && sN != 5 && sN != 6 && sN != 7 && sN != 8 && sN != 9 && sN != 10 && sN != 11 && sN != 12 && sN != 13 && sN != 14 && sN != 15) {
+		if(null == startNode.getSelectionModel().getSelectedItem()) {
 			JOptionPane.showMessageDialog(null, "Please choose a node", "Invalid Node", JOptionPane.ERROR_MESSAGE);
             return false;
 		}
 		int eN = endNode.getSelectionModel().getSelectedItem();
 		//System.out.println(eN);
-		if(eN == 0) {
+		if(eN != 1 && eN != 2 && eN != 3 && eN != 4 && eN != 5 && eN != 6 && eN != 7 && eN != 8 && eN != 9 && eN != 10 && eN != 11 && eN != 12 && eN != 13 && eN != 14 && eN != 15) {
 			JOptionPane.showMessageDialog(null, "Please choose a node", "Invalid Node", JOptionPane.ERROR_MESSAGE);
             return false;
 		}
@@ -444,7 +441,7 @@ public class GraphController {
 	}
 	
 	
-	private void getHeuristic() {
+	private void getHeuristicValue() {
 		h1 = Math.sqrt(Math.pow(endx-S.getCenterX(), 2) + Math.pow(endy-S.getCenterY(), 2));	h1 = Math.round(h1*10.0)/10.0;
 		h2 = Math.sqrt(Math.pow(endx-A1.getCenterX(), 2) + Math.pow(endy-A1.getCenterY(), 2));	h2 = Math.round(h2*10.0)/10.0;
 		h3 = Math.sqrt(Math.pow(endx-A2.getCenterX(), 2) + Math.pow(endy-A2.getCenterY(), 2));	h3 = Math.round(h3*10.0)/10.0;
@@ -556,26 +553,32 @@ public class GraphController {
 		E.setFill(Paint.valueOf("DODGERBLUE"));
 	}
 	
+	private void refreshStatus() {
+		n1.setBlankStatus();
+		n2.setBlankStatus();
+		n3.setBlankStatus();
+		n4.setBlankStatus();
+		n5.setBlankStatus();
+		n6.setBlankStatus();
+		n7.setBlankStatus();
+		n8.setBlankStatus();
+		n9.setBlankStatus();
+		n10.setBlankStatus();
+		n11.setBlankStatus();
+		n12.setBlankStatus();
+		n13.setBlankStatus();
+		n14.setBlankStatus();
+		n15.setBlankStatus();
+		
+	}
+	
 	@FXML
 	private void findPath() {
 		refreshColor();
+		refreshStatus();
 		if(getChoiceBox()) {
-			getHeuristic();
-//			ANode n1 = new ANode("1",h1);
-//			ANode n2 = new ANode("2",h2);
-//			ANode n3 = new ANode("3",h3);
-//			ANode n4 = new ANode("4",h4);
-//			ANode n5 = new ANode("5",h5);
-//			ANode n6 = new ANode("6",h6);
-//			ANode n7 = new ANode("7",h7);
-//			ANode n8 = new ANode("8",h8);
-//			ANode n9 = new ANode("9",h9);
-//			ANode n10 = new ANode("10",h10);
-//			ANode n11 = new ANode("11",h11);
-//			ANode n12 = new ANode("12",h12);
-//			ANode n13 = new ANode("13",h13);
-//			ANode n14 = new ANode("14",h14);
-//			ANode n15 = new ANode("15",h15);
+			getHeuristicValue();
+
 			n1.setEndDistance(h1);
 			n2.setEndDistance(h2);
 			n3.setEndDistance(h3);
@@ -591,6 +594,8 @@ public class GraphController {
 			n13.setEndDistance(h13);
 			n14.setEndDistance(h14);
 			n15.setEndDistance(h15);
+			
+			graphNode.clear();
 			graphNode.add(n1);
 			graphNode.add(n2);
 			graphNode.add(n3);
@@ -614,62 +619,6 @@ public class GraphController {
 					i.setEnd();
 				}
 			}
-//			n1.setTo(n2, getEdge(S,A1));
-//			n1.setTo(n3, getEdge(S,A2));
-//			n1.setTo(n4, getEdge(S,A3));
-//			n2.setTo(n1, getEdge(S,A1));
-//			n2.setTo(n5, getEdge(A1,B1));
-//			n2.setTo(n6, getEdge(A1,B2));
-//			n2.setTo(n7, getEdge(A1,B3));
-//			n3.setTo(n1, getEdge(S,A2));
-//			n3.setTo(n7, getEdge(A2,B3));
-//			n3.setTo(n8, getEdge(A2,B4));
-//			n3.setTo(n9, getEdge(A2,B5));
-//			n4.setTo(n1, getEdge(S,A3));
-//			n4.setTo(n9, getEdge(A3,B5));
-//			n5.setTo(n2, getEdge(A1,B1));
-//			n5.setTo(n6, getEdge(B1,B2));
-//			n5.setTo(n10, getEdge(B1,C1));
-//			n6.setTo(n2, getEdge(A1,B2));
-//			n6.setTo(n5, getEdge(B1,B2));
-//			n6.setTo(n7, getEdge(B2,B3));
-//			n6.setTo(n10, getEdge(B2,C1));
-//			n7.setTo(n2, getEdge(A1,B3));
-//			n7.setTo(n3, getEdge(A2,B3));
-//			n7.setTo(n6, getEdge(B2,B3));
-//			n7.setTo(n8, getEdge(B3,B4));
-//			n7.setTo(n11, getEdge(B3,C2));
-//			n7.setTo(n12, getEdge(B3,C3));
-//			n7.setTo(n15, getEdge(B3,E));
-//			n8.setTo(n3, getEdge(B4,A2));
-//			n8.setTo(n7, getEdge(B3,B4));
-//			n8.setTo(n13, getEdge(B4,C4));
-//			n9.setTo(n3, getEdge(A2,B5));
-//			n9.setTo(n4, getEdge(A3,B5));
-//			n9.setTo(n13, getEdge(B5,C4));
-//			n9.setTo(n14, getEdge(B5,C5));
-//			n10.setTo(n5, getEdge(B1,C1));
-//			n10.setTo(n6, getEdge(B2,C1));
-//			n10.setTo(n11, getEdge(C1,C2));
-//			n10.setTo(n15, getEdge(C1,E));
-//			n11.setTo(n7, getEdge(C2,B3));
-//			n11.setTo(n10, getEdge(C1,C2));
-//			n11.setTo(n15, getEdge(C2,E));
-//			n12.setTo(n7, getEdge(B3,C3));
-//			n12.setTo(n15, getEdge(C3,E));
-//			n13.setTo(n8, getEdge(B4,C4));
-//			n13.setTo(n9, getEdge(B5,C4));
-//			n13.setTo(n14, getEdge(C5,C4));
-//			n13.setTo(n15, getEdge(E,C4));
-//			n14.setTo(n9, getEdge(B5,C5));
-//			n14.setTo(n13, getEdge(C4,C5));
-//			n14.setTo(n15, getEdge(E,C5));
-//			n15.setTo(n7, getEdge(E,B3));
-//			n15.setTo(n10, getEdge(E,C1));
-//			n15.setTo(n11, getEdge(E,C2));
-//			n15.setTo(n12, getEdge(E,C3));
-//			n15.setTo(n13, getEdge(E,C4));
-//			n15.setTo(n14, getEdge(E,C5));
 			
 			
 			for(ANode i : graphNode) {

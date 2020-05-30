@@ -1,6 +1,7 @@
 package AStarGraph;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,7 @@ public class DisplayGraph extends Application  {
 	private Stage primaryStage;
 	private AnchorPane root;
 	
-	private ArrayList<Node> nodeData = new ArrayList<Node>();
+	
 	
 	public DisplayGraph() {
 		
@@ -27,7 +28,8 @@ public class DisplayGraph extends Application  {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("AStarGraph");
-		showGraphOverview();
+		//showGraphOverview();
+		showGraphDraw();
 	}
 	
 	public void showGraphOverview() {
@@ -41,7 +43,24 @@ public class DisplayGraph extends Application  {
 			primaryStage.show();
 			
 			GraphController controller = loader.getController();
-			controller.setGraph(this,nodeData);
+			controller.setGraph(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void showGraphDraw() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(DisplayGraph.class.getResource("GraphDraw.fxml"));
+			root = (AnchorPane) loader.load();
+			
+			Scene scene = new Scene(root);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			
+			GraphDrawController controller = loader.getController();
+			controller.setGraph(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
