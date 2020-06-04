@@ -21,14 +21,14 @@
                   <Image url="@../../images/wallpaperflare.com_wallpaper.jpg" />
                </image>
             </ImageView>
-            <Button layoutX="308.0" layoutY="439.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: black;" text="Graph" textFill="WHITE">
+            <Button layoutX="634.0" layoutY="440.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="125.0" style="-fx-background-color: black;" styleClass="label" stylesheets="@application.css" text="Graph" textFill="WHITE">
                <font>
-                  <Font size="18.0" />
+                  <Font size="30.0" />
                </font>
             </Button>
-            <Button layoutX="649.0" layoutY="439.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="93.0" style="-fx-background-color: black;" text="2D Grid" textFill="WHITE">
+            <Button layoutX="292.0" layoutY="440.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="125.0" style="-fx-background-color: black;" styleClass="label" stylesheets="@application.css" text="2D Grid" textFill="WHITE">
                <font>
-                  <Font size="18.0" />
+                  <Font size="27.0" />
                </font>
             </Button>
             <Label layoutX="533.0" layoutY="52.0" stylesheets="@application.css" text="Star" textFill="YELLOW">
