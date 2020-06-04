@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Glow?>
@@ -21,15 +22,23 @@
                   <Image url="@../../images/wallpaperflare.com_wallpaper.jpg" />
                </image>
             </ImageView>
-            <Button layoutX="634.0" layoutY="440.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="125.0" style="-fx-background-color: black;" styleClass="label" stylesheets="@application.css" text="Graph" textFill="WHITE">
+            <Button layoutX="626.0" layoutY="437.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="132.0" style="-fx-background-color: black;" stylesheets="@application.css" text="Graph" textFill="WHITE">
                <font>
                   <Font size="30.0" />
                </font>
+               <styleClass>
+                  <String fx:value="label" />
+                  <String fx:value="BoJack" />
+               </styleClass>
             </Button>
-            <Button layoutX="292.0" layoutY="440.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="125.0" style="-fx-background-color: black;" styleClass="label" stylesheets="@application.css" text="2D Grid" textFill="WHITE">
+            <Button layoutX="292.0" layoutY="440.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="125.0" style="-fx-background-color: black;" stylesheets="@application.css" text="2D Grid" textFill="WHITE">
                <font>
                   <Font size="27.0" />
                </font>
+               <styleClass>
+                  <String fx:value="label" />
+                  <String fx:value="Diane" />
+               </styleClass>
             </Button>
             <Label layoutX="533.0" layoutY="52.0" stylesheets="@application.css" text="Star" textFill="YELLOW">
                <font>
