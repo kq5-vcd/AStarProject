@@ -1,7 +1,0 @@
-@font-face{
-	src: url('AStarGraph/ness.ttf');
-}
-
-.label{
-	-fx-font-family: "Ness";
-}

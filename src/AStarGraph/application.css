@@ -1,0 +1,7 @@
+#font-face{
+	src: url('ness.ttf');
+}
+
+.label{
+	-fx-font-family: "Ness";
+}
