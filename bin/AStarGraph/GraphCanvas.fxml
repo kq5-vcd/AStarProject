@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AStarGraph.GraphController">
+   <children>
+      <Pane prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <Line fx:id="SA1" endX="150.0" endY="170.0" startX="300.0" startY="50.0" />
+            <Line fx:id="SA2" endX="420.0" endY="180.0" startX="300.0" startY="50.0" />
+            <Line fx:id="SA3" endX="570.0" endY="200.0" fill="BLACK" startX="300.0" startY="50.0" />
+            <Line fx:id="A1B1" endX="100.0" endY="350.0" startX="150.0" startY="170.0" />
+            <Line fx:id="A1B2" endX="200.0" endY="270.0" startX="150.0" startY="170.0" />
+            <Line fx:id="A1B3" endX="380.0" endY="300.0" startX="150.0" startY="170.0" />
+            <Line fx:id="A2B3" endX="380.0" endY="300.0" startX="420.0" startY="180.0" />
+            <Line fx:id="A2B4" endX="550.0" endY="300.0" startX="420.0" startY="180.0" />
+            <Line fx:id="A2B5" endX="650.0" endY="270.0" startX="420.0" startY="180.0" />
+            <Line fx:id="A3B5" endX="650.0" endY="270.0" startX="570.0" startY="200.0" />
+            <Line fx:id="B1B2" endX="200.0" endY="270.0" startX="100.0" startY="350.0" />
+            <Line fx:id="B2B3" endX="380.0" endY="300.0" startX="200.0" startY="270.0" />
+            <Line fx:id="B3B4" endX="550.0" endY="300.0" startX="380.0" startY="300.0" />
+            <Line fx:id="B3E" endX="400.0" endY="550.0" startX="380.0" startY="300.0" />
+            <Line fx:id="B2C1" endX="200.0" endY="460.0" startX="200.0" startY="270.0" />
+            <Line fx:id="B1C1" endX="200.0" endY="460.0" startX="100.0" startY="350.0" />
+            <Line fx:id="B3C2" endX="330.0" endY="400.0" startX="380.0" startY="300.0" />
+            <Line fx:id="C2E" endX="400.0" endY="550.0" startX="330.0" startY="400.0" />
+            <Line fx:id="B3C3" endX="450.0" endY="430.0" startX="380.0" startY="300.0" />
+            <Line fx:id="C1C2" endX="330.0" endY="400.0" startX="200.0" startY="460.0" />
+            <Line fx:id="C1E" endX="400.0" endY="550.0" startX="200.0" startY="460.0" />
+            <Line fx:id="C3E" endX="400.0" endY="550.0" startX="450.0" startY="430.0" />
+            <Line fx:id="B4C4" endX="600.0" endY="410.0" startX="550.0" startY="300.0" />
+            <Line fx:id="B5C4" endX="600.0" endY="410.0" startX="650.0" startY="270.0" />
+            <Line fx:id="B5C5" endX="700.0" endY="420.0" startX="650.0" startY="270.0" />
+            <Line fx:id="C5C4" endX="600.0" endY="410.0" startX="700.0" startY="420.0" />
+            <Line fx:id="C4E" endX="400.0" endY="550.0" startX="600.0" startY="410.0" />
+            <Line fx:id="C5E" endX="400.0" endY="550.0" startX="700.0" startY="420.0" />
+            <Circle id="1" fx:id="S" centerX="300.0" centerY="50.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="2" fx:id="A1" centerX="150.0" centerY="170.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="3" fx:id="A2" centerX="420.0" centerY="180.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="4" fx:id="A3" centerX="570.0" centerY="200.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="6" fx:id="B2" centerX="200.0" centerY="270.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="7" fx:id="B3" centerX="380.0" centerY="300.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="8" fx:id="B4" centerX="550.0" centerY="300.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="9" fx:id="B5" centerX="650.0" centerY="270.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="5" fx:id="B1" centerX="100.0" centerY="350.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="10" fx:id="C1" centerX="200.0" centerY="460.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="11" fx:id="C2" centerX="330.0" centerY="400.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="12" fx:id="C3" centerX="450.0" centerY="430.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="13" fx:id="C4" centerX="600.0" centerY="410.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="14" fx:id="C5" centerX="700.0" centerY="420.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="15" fx:id="E" centerX="400.0" centerY="550.0" fill="DODGERBLUE" radius="33.0" stroke="BLACK" strokeType="INSIDE" />
+            <Text fx:id="hS" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="290.0" y="55.0" />
+            <Text fx:id="hA1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="140.0" y="175.0" />
+            <Text fx:id="hA2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="410.0" y="185.0" />
+            <Text fx:id="hA3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="560.0" y="205.0" />
+            <Text fx:id="hB1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="90.0" y="355.0" />
+            <Text fx:id="hB2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="190.0" y="275.0" />
+            <Text fx:id="hB3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="370.0" y="305.0" />
+            <Text fx:id="hB4" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="540.0" y="305.0" />
+            <Text fx:id="hB5" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="640.0" y="275.0" />
+            <Text fx:id="hC1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="190.0" y="465.0" />
+            <Text fx:id="hC2" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="320.0" y="405.0" />
+            <Text fx:id="hC3" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="440.0" y="435.0" />
+            <Text fx:id="hC4" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="590.0" y="415.0" />
+            <Text fx:id="hC5" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="690.0" y="425.0" />
+            <Text fx:id="hE" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" x="390.0" y="555.0" />
+            <Label layoutX="251.0" layoutY="34.0" text="1" />
+            <Label layoutX="98.0" layoutY="154.0" text="2" />
+            <Label layoutX="366.0" layoutY="164.0" text="3" />
+            <Label layoutX="606.0" layoutY="159.0" text="4" />
+            <Label layoutX="687.0" layoutY="232.0" text="9" />
+            <Label layoutX="500.0" layoutY="270.0" text="8" />
+            <Label layoutX="357.0" layoutY="251.0" text="7" />
+            <Label layoutX="159.0" layoutY="243.0" text="6" />
+            <Label layoutX="60.0" layoutY="302.0" text="5" />
+            <Label layoutX="733.0" layoutY="389.0" text="14" />
+            <Label layoutX="148.0" layoutY="444.0" text="10" />
+            <Label layoutX="283.0" layoutY="379.0" text="11" />
+            <Label layoutX="465.0" layoutY="379.0" text="12" />
+            <Label layoutX="553.0" layoutY="379.0" text="13" />
+            <Label layoutX="351.0" layoutY="541.0" text="15" />
+            <Label fx:id="printPath" layoutX="557.0" layoutY="42.0" prefHeight="25.0" prefWidth="201.0" text="Label" />
+         </children>
+      </Pane>
+      <ChoiceBox fx:id="startNode" layoutX="825.0" layoutY="104.0" prefHeight="26.0" prefWidth="121.0" />
+      <ChoiceBox fx:id="endNode" layoutX="825.0" layoutY="198.0" prefHeight="26.0" prefWidth="122.0" />
+      <Label layoutX="825.0" layoutY="78.0" prefHeight="17.0" prefWidth="66.0" text="Start Node" />
+      <Label layoutX="825.0" layoutY="170.0" prefHeight="17.0" prefWidth="66.0" text="End Node" />
+      <Button layoutX="853.0" layoutY="334.0" mnemonicParsing="false" onAction="#findPath" text="Find Path" />
+   </children>
+</AnchorPane>
