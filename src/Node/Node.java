@@ -128,7 +128,7 @@ public class Node implements Comparable<Node> {
 		double xDiff = x - nX;
 		double yDiff = y - nY;
 		
-		return Math.abs(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+		return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 	}
 	
 	public double getPathValue(Node node) {
