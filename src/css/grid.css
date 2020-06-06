@@ -1,0 +1,28 @@
+.traversable {
+    -fx-border-color : dodgerblue;
+    -fx-border-width : 0.7fx;
+    -fx-background-color : white;
+}
+
+.obstacle {
+    -fx-border-color : black;
+    -fx-border-width : 0.5fx;
+    -fx-background-color : derive(black, 0.9);
+    -fx-text-fill : white;
+}
+
+.start {
+    -fx-border-color : green;
+    -fx-border-width : 3fx;
+    -fx-background-color : derive(green,0.7);
+}
+
+.end {
+    -fx-border-color : red;
+    -fx-border-width : 3fx;
+    -fx-background-color : derive(red, 0.7);
+}
+
+.path {
+    -fx-
+}
