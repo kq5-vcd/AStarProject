@@ -128,7 +128,7 @@ public class Node implements Comparable<Node> {
 		double xDiff = x - nX;
 		double yDiff = y - nY;
 		
-		return Math.abs(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+		return Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 	}
 	
 	public double getPathValue(Node node) {
@@ -158,6 +158,14 @@ public class Node implements Comparable<Node> {
 	public void setEnd() {
 		endNode = true;
 	}
+	
+	public void removeStart() {
+		startNode = false;
+	}
+
+	public void removeEnd() {
+		endNode = false;
+	}
 
 	
 	public boolean isStart() {
@@ -170,6 +178,10 @@ public class Node implements Comparable<Node> {
 
 	public boolean isBlank() {
 		return status == Status.BLANK;
+	}
+
+	public boolean isCheck() {
+		return status == Status.CHECKED;
 	}
 	
 	public void setBlank() {

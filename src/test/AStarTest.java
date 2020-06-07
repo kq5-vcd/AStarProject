@@ -44,7 +44,7 @@ public class AStarTest {
 		a3.setTo(b5);
 		b5.setTo(end);
 		
-		AStar.AStarSearch(start, end);
+		AStar.AStarSearch(start, b5);
 	}
 
 }
