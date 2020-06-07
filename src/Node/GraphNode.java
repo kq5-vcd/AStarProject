@@ -159,4 +159,8 @@ public class GraphNode extends Node {
 		}
 	}
 	
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/remotes/origin/master
