@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.event.EventHandler;
+import Algorithm.AStar;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import Node.GraphNode;
 
 public class GraphDrawController implements Initializable {
 	
 	private enum GraphStatus {
 		BLANK,
-		NODE
+		NODE,
+		EDGE
 	}
 	private GraphStatus envStatus;
 	
@@ -39,6 +39,8 @@ public class GraphDrawController implements Initializable {
 	@FXML
 	private Button showStepsBtn;
 	@FXML
+	private Button homeBtn;
+	@FXML
 	private TextField endDistanceField;
 	@FXML
 	private TextField distanceField;
@@ -53,39 +55,37 @@ public class GraphDrawController implements Initializable {
 	@FXML
 	private Pane canvas;
 	@FXML
-	private Label status;
-	@FXML
 	private Label endDistanceLabel;
 	@FXML
 	private Label distanceLabel;
 	
 	private List<GraphNode> nodes = new ArrayList<GraphNode>();
 	private GraphNode currentNode;
+	private GraphNode tempNode;
 	private GraphNode start;
 	private GraphNode end;
 	
+	private boolean bothDirection;
+	
 	public void createNode() {
-		status.setText("*Status: Click to create node");
-		
-		canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent evt) {
-				GraphNode node = new GraphNode(evt);
-				nodes.add(node);
-
-				drawNode(node);
-				chooseNode(node);
-				
-				refreshEnv();
-				
-				status.setText("*Status: End node creation");
+		canvas.setOnMousePressed(e -> {
+			GraphNode node = new GraphNode(e);
+			nodes.add(node);
+			
+			if(end != null) {
+				node.setEndDistance(end);
 			}
+
+			drawNode(node);
+			chooseNode(node);
+			
+			refreshEnv();
 		});
 	}
 	
 	public void moveNode() {
-		status.setText("*Status: Drag node to desired location");
-		
 		currentNode.setDrag();
+		refreshEnv();
 	}
 	
 	public void eraseNode(GraphNode node) {
@@ -99,192 +99,54 @@ public class GraphDrawController implements Initializable {
 	}
 	
 	public void createEdge() {
-		for(GraphNode node: nodes) {
-			node.clearDrag();
-		}
+		currentNode.clearDrag();
 		
-//		if(numNode>1) clearDrag();
-////		for(ANode node : nodes) {
-////			System.out.println(node.getNodeId());
-////		}
-////		for(Node node : pane.getChildren()) {
-////			System.out.println(node.getId());
-////		}
-////		System.out.println(nodes.size());
-		status.setText("*Status: Click a node to create connection");
-		
-		canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-			Circle c1, c2;
-			boolean firstClick = true;
-			boolean	secondClick = false;
-			
-			GraphNode node1, node2;
-
-			@Override
-			public void handle(MouseEvent evt) {
-				if(firstClick) {
-					c1 = (Circle) evt.getTarget();
-					c1.setStroke(Color.RED);
-					
-					node1 = getNodeByCircle(c1);
-					
-					firstClick = false;
-					secondClick = true;						
-				} else if(secondClick) {
-					status.setText("*Status: Click another node to set distance");
-					c2 = (Circle) evt.getTarget();
-					
-					if(!c1.equals(c2)) {
-						c1.setStroke(Color.BLACK);
-						
-						node2 = getNodeByCircle(c2);
-						
-						firstClick = true;
-						secondClick = false;
-						
-						setEdge(node1, node2);
-					}
-				}
-//						Line lreverse = new Line(x2,y2,x1,y1);
-//						lreverse.setId(c2.getId()+c1.getId());
-//						for(Node node : pane.getChildren()) {
-//							if(node.getId()!=null)
-//								if(node.getId().equals(l.getId())||node.getId().equals(lreverse.getId())) 
-//									return;
-//						}
-//						
-//						String inputDistance;
-//						do{
-//							inputDistance = JOptionPane.showInputDialog(null, "Please input distance:", "Input distance between two nodes", JOptionPane.INFORMATION_MESSAGE);
-//							try {
-//								double d = Double.parseDouble(inputDistance);
-//								
-//								for(ANode n : nodes) {
-//									if(String.valueOf(n.getNodeId()).equals(c2.getId())) {
-//										temp.setX(n.getX());
-//										temp.setY(n.getY());
-//										temp.setNodeId(n.getNodeId());
-//									}
-//								}
-//								for(ANode n : nodes) {
-//									if(String.valueOf(n.getNodeId()).equals(c1.getId())) {
-//										n.setTo(temp, d);
-//									}
-//								}
-//								for(ANode n : nodes) {
-//									if(String.valueOf(n.getNodeId()).equals(c1.getId())) {
-//										temp.setX(n.getX());
-//										temp.setY(n.getY());
-//										temp.setNodeId(n.getNodeId());
-//									}
-//								}
-//								for(ANode n : nodes) {
-//									if(String.valueOf(n.getNodeId()).equals(c2.getId())) {
-//										n.setTo(temp, d);
-//									}
-//								}
-//								break;
-//							}catch(NumberFormatException e) {
-//								JOptionPane.showMessageDialog(null, "Please input a number", "Invalid input", JOptionPane.ERROR_MESSAGE);
-//							}
-//						}while(true);
-//						Text distance = new Text((x1+x2)/2,(y1+y2)/2,inputDistance);
-//						distance.setFont(new Font(14));
-//						pane.getChildren().add(l);
-//						pane.getChildren().add(distance);
-//						pane.setOnMousePressed(null);
-//						if(!clickTwo) status.setText("*Status: End creating edge");
-//					}
-//			}	
-			}
-//			public void handle(MouseEvent evt) {
-//				ANode temp = new ANode();
-//				if(clickOne) {
-//					c1 = (Circle) evt.getTarget();
-//					c1.setStroke(Color.RED);
-//					x1 = c1.getCenterX();
-//					y1 = c1.getCenterY();
-//					clickOne = false;
-//					clickTwo = true;	
-//					
-//				}
-//				else if(clickTwo) {
-//						status.setText("*Status: Click another node to set distance");
-//						c2 = (Circle) evt.getTarget();
-//						if(!c1.equals(c2)) {
-//							c1.setStroke(Color.BLACK);
-//							x2 = c2.getCenterX();
-//							y2 = c2.getCenterY();
-//							clickOne = true;
-//							clickTwo = false;
-//							Line l = new Line(x1,y1,x2,y2);
-//							l.setId(c1.getId()+c2.getId());
-//							Line lreverse = new Line(x2,y2,x1,y1);
-//							lreverse.setId(c2.getId()+c1.getId());
-//							for(Node node : pane.getChildren()) {
-//								if(node.getId()!=null)
-//									if(node.getId().equals(l.getId())||node.getId().equals(lreverse.getId())) 
-//										return;
-//							}
-//							
-//							String inputDistance;
-//							do{
-//								inputDistance = JOptionPane.showInputDialog(null, "Please input distance:", "Input distance between two nodes", JOptionPane.INFORMATION_MESSAGE);
-//								try {
-//									double d = Double.parseDouble(inputDistance);
-//									
-//									for(ANode n : nodes) {
-//										if(String.valueOf(n.getNodeId()).equals(c2.getId())) {
-//											temp.setX(n.getX());
-//											temp.setY(n.getY());
-//											temp.setNodeId(n.getNodeId());
-//										}
-//									}
-//									for(ANode n : nodes) {
-//										if(String.valueOf(n.getNodeId()).equals(c1.getId())) {
-//											n.setTo(temp, d);
-//										}
-//									}
-//									for(ANode n : nodes) {
-//										if(String.valueOf(n.getNodeId()).equals(c1.getId())) {
-//											temp.setX(n.getX());
-//											temp.setY(n.getY());
-//											temp.setNodeId(n.getNodeId());
-//										}
-//									}
-//									for(ANode n : nodes) {
-//										if(String.valueOf(n.getNodeId()).equals(c2.getId())) {
-//											n.setTo(temp, d);
-//										}
-//									}
-//									break;
-//								}catch(NumberFormatException e) {
-//									JOptionPane.showMessageDialog(null, "Please input a number", "Invalid input", JOptionPane.ERROR_MESSAGE);
-//								}
-//							}while(true);
-//							Text distance = new Text((x1+x2)/2,(y1+y2)/2,inputDistance);
-//							distance.setFont(new Font(14));
-//							pane.getChildren().add(l);
-//							pane.getChildren().add(distance);
-//							pane.setOnMousePressed(null);
-//							if(!clickTwo) status.setText("*Status: End creating edge");
-//						}
-//				}	
-//			}
-		});
+		singleBox.setDisable(false);
+		doubleBox.setDisable(false);
 	}
 	
-	public void setEdge(GraphNode node1, GraphNode node2) {
-		node1.setTo(node2);
-		
+	public void setEdge(GraphNode node1, GraphNode node2, boolean direction) {
+		if(!node1.equals(node2)) {
+			if(!node1.searchConnection(node2)) {
+				node1.setTo(node2);
+				
+				if(direction) {
+					node2.setTo(node1);
+				}
+				
+				eraseNode(node1);
+				eraseNode(node2);
+				
+				Line edge = new Line(node1.getX(), node1.getY(), node2.getX(), node2.getY());
+				
+				node1.setLine(edge);
+				node2.setLine(edge);
+				
+				canvas.getChildren().add(edge);
+				drawNode(node1);
+				drawNode(node2);
+				
+				envStatus = GraphStatus.NODE;
+				refreshEnv();
+			}
+			
+			disableAll();
+				
+			distanceLabel.setDisable(false);
+			distanceField.setDisable(false);
+			distanceField.setText(Math.round(node1.getDistance(node2)) + "");
+		}
 	}
 		
 	public void findPath() {
-		
+		AStar.AStarSearch(start, end);
+		showStepsBtn.setDisable(false);
 	}
 	
 	public void showSteps() {
-		
+		for(GraphNode node: nodes) {
+			node.displayStep();
+		}
 	}
 	
 	public GraphNode getNodeByCircle(Circle point) {
@@ -298,19 +160,48 @@ public class GraphDrawController implements Initializable {
 	}
 	
 	public void setEndDistance() {
+		double heuristic = Double.parseDouble(endDistanceField.getText());
 		
+		currentNode.setEndDistance(heuristic);
 	}
 	
 	public void setDistance() {
+		double value = Double.parseDouble(distanceField.getText());
 		
+		currentNode.setTo(tempNode, value);
+		if(bothDirection) {
+			tempNode.setTo(currentNode);
+		}
 	}
 	
 	public void setSingle() {
+		if(doubleBox.isSelected()) {
+			doubleBox.setSelected(false);
+		}
 		
+		envStatus = GraphStatus.EDGE;
+		System.out.println("Create edge");
+		
+		for(GraphNode node: nodes) {
+			node.getPoint().setOnMouseClicked(null);
+			node.getPoint().setOnMousePressed(null);
+		}
+		refreshEnv();
 	}
 	
 	public void setDouble() {
+		if(singleBox.isSelected()) {
+			singleBox.setSelected(false);
+		}
 		
+		envStatus = GraphStatus.EDGE;
+		System.out.println("Create edge");
+		
+		for(GraphNode node: nodes) {
+			node.getPoint().setOnMouseClicked(null);
+			node.getPoint().setOnMousePressed(null);
+		}
+		refreshEnv();
 	}
 	
 	public void setStart() {
@@ -326,6 +217,7 @@ public class GraphDrawController implements Initializable {
 			start = null;
 		}
 		
+		refreshEnv();
 	}
 	
 	public void setEnd() {
@@ -334,12 +226,18 @@ public class GraphDrawController implements Initializable {
 				end.clearEnd();
 			} catch(NullPointerException e) {}
 			
+			for(GraphNode node: nodes) {
+				node.setEndDistance(currentNode);
+			}
+			
 			currentNode.endNode();
 			end = currentNode;
 		} else {
 			currentNode.clearEnd();
 			end = null;
 		}
+		
+		refreshEnv();
 	}
 	
 	public void deleteNode() {
@@ -360,111 +258,104 @@ public class GraphDrawController implements Initializable {
 	}
 
 	public void refreshEnv() {
+		if(start != null && end != null) {
+			findPathBtn.setDisable(false);
+		} else {
+			findPathBtn.setDisable(true);
+		}
+		
 		canvas.setOnMousePressed(e -> {
 			if(envStatus == GraphStatus.NODE) {
-//				try {
-					if(isOut(e.getX(), e.getY())) {
-						clearEnv();
-					} //else {
+				if(isOut(e.getX(), e.getY())) {
+					clearEnv();
+				}
+			} else if(envStatus == GraphStatus.EDGE) {
+				System.out.println("Edge");
+				if(isOut(e.getX(), e.getY())) {
+					System.out.println("Edge");
+					try {
+						Circle point;
+						bothDirection = true;
 						
-//					}
-//				} catch (NullPointerException eNull) {
-//					try {
-//						Circle point;
-//						
-//						if(envStatus == GraphStatus.NODE) {
-//							point = (Circle) e.getTarget();
-//							
-//							if(!point.equals(null)) {
-//								envStatus = GraphStatus.NODE;
-//								
-//								point.setOnMouseClicked(null);
-//								
-//								currentNode = getNodeByCircle(point);
-//								currentNode.selectNode();
-//								moveNodeBtn.setDisable(false);
-//							}
-//						}
-//					} catch(ClassCastException eCast) {
-//						moveNodeBtn.setDisable(true);
-//						endDistanceLabel.setDisable(true);
-//						endDistanceField.setDisable(true);
-//						createEdgeBtn.setDisable(true);
-//						singleBox.setDisable(true);
-//						doubleBox.setDisable(true);
-//						distanceLabel.setDisable(true);
-//						distanceField.setDisable(true);
-//						startBox.setDisable(true);
-//						endBox.setDisable(true);
-//						deleteNodeBtn.setDisable(true);
-//					}
-					
-//				}
+						if(singleBox.isSelected()) {
+							bothDirection = false;
+						}
+						
+						point = (Circle) e.getTarget();
+						point.setOnMouseClicked(null);
+						
+						currentNode.deselectNode();
+							
+						tempNode = getNodeByCircle(point);
+						
+						setEdge(currentNode, tempNode, bothDirection);
+					} catch(ClassCastException eCast) {
+						clearEnv();
+					}
+				}
 			} else {
 				try {
 					Circle point;
 					
-					if(envStatus == GraphStatus.NODE) {
-						point = (Circle) e.getTarget();
+					point = (Circle) e.getTarget();
+					
+					envStatus = GraphStatus.NODE;
 						
-						if(!point.equals(null)) {
-							envStatus = GraphStatus.NODE;
-							
-							point.setOnMouseClicked(null);
-							
-							currentNode = getNodeByCircle(point);
-							chooseNode(currentNode);
-						}
-					}
+					point.setOnMouseClicked(null);
+						
+					currentNode = getNodeByCircle(point);
+					chooseNode(currentNode);
 				} catch(ClassCastException eCast) {
 					disableAll();
 				}
 			}
 			
 		});
-		
-//		canvas.setOnMousePressed(e -> {
-//			Circle point;
-//
-//		
-//			if(envStatus == GraphStatus.NODE) {
-//				point = (Circle) e.getTarget();
-//				
-//				if(!point.equals(null)) {
-//					envStatus = GraphStatus.NODE;
-//					
-//					point.setOnMouseClicked(null);
-//					
-//					currentNode = getNodeByCircle(point);
-//					currentNode.selectNode();
-//					moveNodeBtn.setDisable(false);
-//				}
-//			}
-//		});
 	}
 	
 	public void chooseNode(GraphNode node) {
 		envStatus = GraphStatus.NODE;
 		
-		try {
+		if(currentNode != null) {
 			if(!node.equals(currentNode)) {
 				currentNode.deselectNode();
+				refreshEnv();
 			}
-		} catch(NullPointerException e) {}
+		}
+		
+		if(end != null) {
+			if(!node.equals(end)) {
+				endDistanceLabel.setDisable(false);
+				endDistanceField.setDisable(false);
+				
+				endDistanceField.setText(Math.round(node.getEndDistance()) + "");
+			}
+		}
 		
 		currentNode = node;
 		currentNode.selectNode();
 		
-		moveNodeBtn.setDisable(false);
+		if(!node.hasConnections()) {
+			moveNodeBtn.setDisable(false);
+			deleteNodeBtn.setDisable(false);
+		}
+		
 		startBox.setDisable(false);
 		endBox.setDisable(false);
-		deleteNodeBtn.setDisable(false);
 		
 		if(currentNode.isStart()) {
 			startBox.setSelected(true);
+		} else {
+			startBox.setSelected(false);
 		}
 		if(currentNode.isEnd()) {
 			endBox.setSelected(true);
+		} else {
+			endBox.setSelected(false);
+		}
+		
+		if(nodes.size() > 1) {
+			createEdgeBtn.setDisable(false);
 		}
 	}
 	
@@ -493,6 +384,7 @@ public class GraphDrawController implements Initializable {
 		
 		currentNode.deselectNode();
 		currentNode = null;
+		tempNode = null;
 		
 		disableAll();
 	}
@@ -514,6 +406,24 @@ public class GraphDrawController implements Initializable {
 		doubleBox.setSelected(false);
 		startBox.setSelected(false);
 		endBox.setSelected(false);
+		
+		distanceField.setText("");
+		endDistanceField.setText("");
+		
+		showStepsBtn.setDisable(true);
+	}
+	
+	public void reset() {
+		nodes.clear();
+		start = null;
+		end = null;
+		
+		canvas.getChildren().clear();
+		clearEnv();
+	}
+	
+	public void rooftop() {
+		
 	}
 
 	@Override

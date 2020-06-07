@@ -179,6 +179,10 @@ public class Node implements Comparable<Node> {
 	public boolean isBlank() {
 		return status == Status.BLANK;
 	}
+
+	public boolean isCheck() {
+		return status == Status.CHECKED;
+	}
 	
 	public void setBlank() {
 		setStatus(Status.BLANK);

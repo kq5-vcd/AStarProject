@@ -1,8 +1,13 @@
 package Node;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Node.Node.Status;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -10,6 +15,7 @@ public class GraphNode extends Node {
 	
 	Circle point;
 	Text info;
+	List<Line> connections = new ArrayList<Line>();
 	
 	public GraphNode(MouseEvent evt) {
 		super(evt.getX(), evt.getY());
@@ -24,7 +30,7 @@ public class GraphNode extends Node {
 		
 		point.setOnMouseClicked(null);
 
-		info = new Text(this.getX() - 10, this.getY() + 5, "0.0");
+		info = new Text(this.getX() - 10, this.getY() + 5, "");
 		info.setFont(new Font(14));
 	}
 	
@@ -106,18 +112,52 @@ public class GraphNode extends Node {
 		
 		if(!isStart()) {
 			point.setFill(Color.DODGERBLUE);
-			info.setText("0.0");
+			info.setText("");
 		} else {
 			info.setText("Start");
 		}
 	}
 	
+	public void setLine(Line line) {
+		connections.add(line);
+	}
+	
+	public boolean searchConnection(GraphNode node) {
+		double nX = node.getX();
+		double nY = node.getY();
+				
+		for(Line line: connections) {
+			if((nX == line.getStartX() && nY == line.getStartY()) || (nX == line.getEndX() && nY == line.getEndY())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasConnections() {
+		if(connections.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void displayStep() {
+		if(!isStart() && !isEnd()) {
+			if(isCheck()) {
+				point.setFill(Color.YELLOWGREEN);
+				info.setText("" + Math.round(this.getHeuristic()));
+			}
+		}
+	}
+	
 	@Override
-	public void check() {
-		setStatus(Status.CHECKED);
+	public void useNode() {
+		setStatus(Status.USED);
 		
-		point.setFill(Color.TEAL);
-		info.setText("" + this.getHeuristic());
+		if(!isStart()) {
+			point.setFill(Color.TEAL);
+			info.setText("" + Math.round(this.getHeuristic()));
+		}
 	}
 	
 }
