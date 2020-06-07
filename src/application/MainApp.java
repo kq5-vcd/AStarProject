@@ -1,6 +1,8 @@
-package AStarGraph;
+package application;
+
 import java.io.IOException;
 
+import AStarGraph.DisplayGraph;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

@@ -13,15 +13,15 @@ public class AStar {
     	List<Node> path = new ArrayList<Node>();
     	
     	while(true) {
-    		//System.out.println(node);
-    		node.useNode();
     		path.add(0, node);
     		
     		if(node.isStart()) {
     			break;
     		}
     		
-    		node.useNode();
+    		if(!node.isEnd()) {
+    			node.useNode();
+    		}
     		node = node.getGoFrom();
     	}
     	
