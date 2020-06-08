@@ -20,13 +20,13 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<StackPane maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
       <AnchorPane fx:id="homePane">
          <children>
             <ImageView fitHeight="675.0" fitWidth="1200.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../images/wallpaperflare.com_wallpaper.jpg" />
+                  <Image url="@../../../images/wallpaperflare.com_wallpaper.jpg" />
                </image>
             </ImageView>
             <Button fx:id="graphBtn" layoutX="721.0" layoutY="494.0" mnemonicParsing="false" onAction="#openGraph" prefHeight="55.0" prefWidth="132.0" style="-fx-background-color: black;" stylesheets="@application.css" text="Graph" textFill="WHITE">
@@ -104,6 +104,9 @@
             <fx:include fx:id="graph" source="GraphDraw.fxml" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="gridPane" prefHeight="675.0" prefWidth="1200.0" visible="false" />
+      <AnchorPane fx:id="gridPane" prefHeight="675.0" prefWidth="1200.0" visible="false">
+         <children>
+            <fx:include fx:id="grid" source="GridFrame.fxml" />
+         </children></AnchorPane>
    </children>
 </StackPane>

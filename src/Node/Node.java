@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class Node implements Comparable<Node> {
 	
-	protected static enum Status {
+	public static enum Status {
 	    BLANK,
 	    BLOCKED,
 	    CHECKED,
@@ -142,12 +142,14 @@ public class Node implements Comparable<Node> {
 			heuristic = -1;
 		} else if(isStart()) {
 			heuristic = Math.pow(10, 5);
-		} else if(currentValue > value || currentValue == 0) {
-			setGoFrom(from);
-			
-			setCurrentValue(value);
-			setHeuristic();
-			check();
+		} else if(isBlank()) {
+			if(currentValue > value || currentValue == 0) {
+				setGoFrom(from);
+				
+				setCurrentValue(value);
+				setHeuristic();
+				check();
+			}
 		}
 	}
 	
@@ -182,6 +184,13 @@ public class Node implements Comparable<Node> {
 
 	public boolean isCheck() {
 		return status == Status.CHECKED;
+	}
+	
+	public boolean isBlocked() {
+		return status == Status.BLOCKED;
+	}
+	public boolean isUsed(){
+		return status == Status.USED;
 	}
 	
 	public void setBlank() {

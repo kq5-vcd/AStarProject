@@ -1,10 +1,10 @@
-package controller;
+package Graph;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import Exception.PopUp;
 import Algorithm.AStar;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -169,18 +169,36 @@ public class GraphDrawController implements Initializable {
 	}
 	
 	public void setEndDistance() {
-		double heuristic = Double.parseDouble(endDistanceField.getText());
-		
-		currentNode.setEndDistance(heuristic);
+		try {
+			double heuristic = Double.parseDouble(endDistanceField.getText());
+			if(heuristic <= 0) {
+				PopUp p = new PopUp();
+				p.popUp();
+			}
+			else currentNode.setEndDistance(heuristic);
+		}catch(NumberFormatException e) {
+			PopUp p = new PopUp();
+			p.popUp();
+		}
 	}
 	
 	public void setDistance() {
-		double value = Double.parseDouble(distanceField.getText());
-		
-		currentNode.setTo(tempNode, value);
-		if(bothDirection) {
-			tempNode.setTo(currentNode);
-		}
+		try {
+			double value = Double.parseDouble(distanceField.getText());
+			if(value <= 0) {
+				PopUp p = new PopUp();
+				p.popUp();
+			}
+			else {
+				currentNode.setTo(tempNode, value);
+				if(bothDirection) {
+					tempNode.setTo(currentNode);
+				}
+			}
+		}catch(NumberFormatException e) {
+			PopUp p = new PopUp();
+			p.popUp();
+		}	
 	}
 	
 	public void setSingle() {

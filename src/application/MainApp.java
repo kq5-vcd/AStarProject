@@ -1,8 +1,8 @@
 package application;
 
+
 import java.io.IOException;
 
-import controller.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,19 +28,20 @@ public class MainApp extends Application  {
 	}
 	
 	@Override
-	public void start(Stage primaryStage) throws Exception{
+	public void start(Stage primaryStage){
 		try {
-			System.out.println("run");
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("AStarFrame.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/AStarFrame.fxml"));
+			System.out.println(loader);
 			
 			mainStage = primaryStage;
 			root = loader.load();
 			
 			homeController = (MainController) loader.getController();
-			
-   		    primaryStage.setTitle("AStarSearch");
-   		    primaryStage.setScene(new Scene(root));
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("css/grid.css").toExternalForm());
+   		    primaryStage.setTitle("A Star Search");
+   		    primaryStage.setScene(scene);
    		    primaryStage.show();
 			
 		} catch (IOException e) {
