@@ -1,4 +1,4 @@
-package Graph;
+package controller;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import Node.GraphNode;
+import application.MainApp;
 
 public class GraphDrawController implements Initializable {
 	
@@ -38,6 +39,8 @@ public class GraphDrawController implements Initializable {
 	private Button findPathBtn;
 	@FXML
 	private Button showStepsBtn;
+	@FXML
+	private Button resetBtn;
 	@FXML
 	private Button homeBtn;
 	@FXML
@@ -139,6 +142,12 @@ public class GraphDrawController implements Initializable {
 	}
 		
 	public void findPath() {
+		for(GraphNode node: nodes) {
+			if(!node.isStart() && !node.isEnd()) {
+				node.clearNode();
+			}
+		}
+		
 		AStar.AStarSearch(start, end);
 		showStepsBtn.setDisable(false);
 	}
@@ -382,8 +391,11 @@ public class GraphDrawController implements Initializable {
 			});
 		}
 		
-		currentNode.deselectNode();
-		currentNode = null;
+		if(currentNode != null) {
+			currentNode.deselectNode();
+			currentNode = null;
+		}
+		
 		tempNode = null;
 		
 		disableAll();
@@ -423,10 +435,14 @@ public class GraphDrawController implements Initializable {
 	}
 	
 	public void rooftop() {
-		
+		//System.out.println("End");
+		reset();
+		MainApp.getHomeController().home();
 	}
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {}
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		//System.out.println(MainApp.getHomeController());
+	}
 
 }
