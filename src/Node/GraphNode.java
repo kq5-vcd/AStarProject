@@ -29,7 +29,7 @@ public class GraphNode extends Node {
 		
 		point.setOnMouseClicked(null);
 
-		info = new Text(this.getX() - 10, this.getY() + 5, "");
+		info = new Text(this.getX() - 13, this.getY() + 5, "");
 		info.setFont(new Font(14));
 	}
 	
@@ -70,21 +70,21 @@ public class GraphNode extends Node {
 	}
 	
 	public void selectNode() {
-		point.setStroke(Color.RED);
+		point.setStroke(Color.PINK);
 		point.setOnMousePressed(null);
 		point.setOnMouseClicked(null);
 		//System.out.println(getNodeId() + " selected");
 	}
 	
 	public void deselectNode() {
-		point.setStroke(Color.BLACK);
+		point.setStroke(Color.GRAY);
 		//System.out.println(getNodeId() + " deselected");
 	}
 	
 	public void startNode() {
 		setStart();
 		
-		point.setFill(Color.RED);
+		point.setFill(Color.ORANGE);
 		info.setText("Start");
 	}
 	
@@ -99,8 +99,7 @@ public class GraphNode extends Node {
 		removeStart();
 		
 		if(!isEnd()) {
-			point.setFill(Color.DODGERBLUE);
-			info.setText("0.0");
+			clearNode();
 		} else {
 			info.setText("End");
 		}
@@ -110,8 +109,7 @@ public class GraphNode extends Node {
 		removeEnd();
 		
 		if(!isStart()) {
-			point.setFill(Color.DODGERBLUE);
-			info.setText("");
+			clearNode();
 		} else {
 			info.setText("Start");
 		}
@@ -143,10 +141,17 @@ public class GraphNode extends Node {
 	public void displayStep() {
 		if(!isStart() && !isEnd()) {
 			if(isCheck()) {
-				point.setFill(Color.YELLOWGREEN);
+				point.setFill(Color.YELLOW);
 				info.setText("" + Math.round(this.getHeuristic()));
 			}
 		}
+	}
+	
+	public void clearNode() {
+		setBlank();
+		
+		point.setFill(Color.DODGERBLUE);
+		info.setText("");
 	}
 	
 	@Override
@@ -154,13 +159,9 @@ public class GraphNode extends Node {
 		setStatus(Status.USED);
 		
 		if(!isStart()) {
-			point.setFill(Color.TEAL);
+			point.setFill(Color.LIMEGREEN);
 			info.setText("" + Math.round(this.getHeuristic()));
 		}
 	}
-	
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> refs/remotes/origin/master
+

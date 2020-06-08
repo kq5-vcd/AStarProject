@@ -1,1 +1,15 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+#font-face{
+	src: url('ness.ttf');
+}
+
+.label{
+	-fx-font-family: "Ness";
+}
+
+.Diane{
+	-fx-font-size:27px;
+}
+
+.BoJack{
+	-fx-font-size:30px;
+}
