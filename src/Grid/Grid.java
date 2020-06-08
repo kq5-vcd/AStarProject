@@ -10,7 +10,7 @@ public class Grid extends Pane {
     double width;
     double height;
 
-    Cell[][] cells;
+    GridNode[][] cells;
 
     public Grid(int columns, int rows, double width, double height){
         this.columns = columns;
@@ -18,20 +18,20 @@ public class Grid extends Pane {
         this.width = width;
         this.height = height;
 
-        cells = new Cell[rows][columns];
+        cells = new GridNode[rows][columns];
     }
 
     /**
      * Get the cell in grid
      **/
-    public Cell getCell(int row, int column){
+    public GridNode getCell(int row, int column){
         return cells[row][column];
     }
 
     /**
      * Add a new cell to the grid
      **/
-    public void add(Cell cell, int column, int row){
+    public void add(GridNode cell, int column, int row){
 
         cells[row][column] = cell;
 
@@ -40,22 +40,29 @@ public class Grid extends Pane {
         double x = w * column;
         double y = h * row;
 
-        cell.setLayoutX(x);
-        cell.setLayoutY(y);
-        cell.setPrefSize(w,h);
+        cell.getCell().setLayoutX(x);
+        cell.getCell().setLayoutY(y);
+        cell.getCell().setPrefSize(w,h);
 
-        getChildren().add(cell);
+        getChildren().add(cell.getCell());
     }
 
+    public int getRows(){
+        return rows;
+    }
+
+    public int getColumns(){
+        return columns;
+    }
     /**
      * Set the type of the cell
      **/
-    public void setType(CellType type){
-
+    public void setStatus(Node.Status status){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
-                cells[i][j].setType(type);
+                cells[i][j].getCell().setStatus(status);
             }
         }
     }
+
 }

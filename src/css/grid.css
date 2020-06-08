@@ -23,6 +23,12 @@
     -fx-background-color : derive(red, 0.7);
 }
 
-.path {
-    -fx-
+.checked {
+    -fx-background-color: rgba(0,255,0,0.1)
+}
+
+.used {
+    -fx-border-color : blue;
+    -fx-border-width : 3fx;
+    -fx-background-color : derive(dodgerblue, 0.9);
 }

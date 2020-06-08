@@ -1,21 +1,18 @@
 package main.View;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.input.MouseEvent;
+
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import main.Grid.Cell;
-import main.Grid.CellType;
-import main.Grid.Grid;
-import main.Grid.Settings;
+import main.Algorithm.AStar;
+import main.Grid.*;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,10 +20,8 @@ import java.util.ResourceBundle;
 public class MainViewController implements Initializable {
 
     private Grid grid;
-    Cell startCell;
-    Cell endCell;
-
-    ObservableList<Cell> gridList = FXCollections.observableArrayList();
+    GridNode startCell;
+    GridNode endCell;
 
     @FXML
     private ChoiceBox<Integer> rowChoiceBox;
@@ -38,151 +33,400 @@ public class MainViewController implements Initializable {
     private  StackPane gridPane;
 
     @FXML
-    private Button exitBtn;
+    private Button createGridBtn;
+
+    @FXML
+    private Button findPathBtn;
+
+    @FXML
+    private Button showStepsBtn;
+
+    @FXML
+    private Button setStartBtn;
+
+    @FXML
+    private Button setEndBtn;
+
+    @FXML
+    private Button setObstacleBtn;
+
+    @FXML
+    private Button fillAllObstaclesBtn;
+
+    @FXML
+    private Button removeObstacleBtn;
+
+    @FXML
+    private Button removeAllObstaclesBtn;
+
+    @FXML
+    private Button homeBtn;
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb){
-//        choiceList.removeAll(choiceList);
-//        choiceList.addAll(3,4,5,6,7,8);
-        rowChoiceBox.getItems().addAll(3,4,5,6,7,8);
-        columnChoiceBox.getItems().addAll(6,7,8);
+        rowChoiceBox.getItems().addAll(3,4,5,6,7,8,9,10,11,12,13,14,15);
+        columnChoiceBox.getItems().addAll(3,4,5,6,7,8,9,10,11,12,13,14,15);
         rowChoiceBox.setValue(6);
-        columnChoiceBox.setValue(8);
+        columnChoiceBox.setValue(10);
     }
 
+    /**
+     * Reset the grid pane
+     **/
     public void resetGridPane(){
         gridPane.getChildren().removeAll(grid);
     }
-    private void createGridPane(int columns, int rows){
 
+
+    /**
+     * Create the grid pane
+     **/
+    private void createGridPane(int columns, int rows){
         resetGridPane();
-        double n = (double) gridPane.getHeight()/rows;
+        double n =  gridPane.getHeight()/rows;
         if (n*columns > gridPane.getWidth()){
-            n = (double) gridPane.getWidth()/columns;
+            n =  gridPane.getWidth()/columns;
             grid = new Grid(columns, rows, gridPane.getWidth(), n*rows) ;
-            //gridPane.setAlignment(Pos.CENTER);
             for (int i = 0; i < rows; i++){
                 for (int j = 0; j < columns; j++){
                     String text = i + " " + j;
-                    Cell cell = new Cell(text, j, i, CellType.TRAVERSABLE);
-
-                    grid.add(cell, j, i);
+                    GridNode gridNode = new GridNode(text, j , i, Node.Status.BLANK);
+                    grid.add(gridNode, j, i);
                 }
             }
 
-            startCell = grid.getCell(0,0);
-            //startCell.setText("Start");
-            startCell.setStart();
-
-            endCell = grid.getCell(rows - 1, columns -1);
-            //endCell.setText("End");
-            endCell.setEnd();
-
-            gridPane.getChildren().add(grid);
-            gridPane.setAlignment(Pos.CENTER);
         } else {
             grid = new Grid(columns, rows, columns*n, gridPane.getHeight()) ;
-            //gridPane.setAlignment(Pos.CENTER);
             for (int i = 0; i < rows; i++){
                 for (int j = 0; j < columns; j++){
                     String text = i + " " + j;
-                    Cell cell = new Cell(text, j, i, CellType.TRAVERSABLE);
-
-                    grid.add(cell, j, i);
+                    GridNode gridNode = new GridNode(text, j, i, Node.Status.BLANK);
+                    grid.add(gridNode, j, i);
                 }
             }
 
-            startCell = grid.getCell(0,0);
-            //startCell.setText("Start");
-            startCell.setStart();
-
-            endCell = grid.getCell(rows - 1, columns -1);
-            //endCell.setText("End");
-            endCell.setEnd();
-
-            gridPane.getChildren().add(grid);
-            gridPane.setAlignment(Pos.CENTER);
-
-
         }
+        startCell = grid.getCell(0,0);
+        startCell.getCell().setStart();
+        endCell = grid.getCell(rows - 1, columns -1);
+        endCell.getCell().setEnd();
+        gridPane.getChildren().add(grid);
+        //showPath();
+
 
     }
 
-    @FXML
-    private void handleOK(){
+    /**
+     * Create new grid
+     **/
+    public void createGrid(){
         createGridPane(columnChoiceBox.getValue(), rowChoiceBox.getValue());
+
+        findPathBtn.setDisable(false);
+        setStartBtn.setDisable(false);
+        setEndBtn.setDisable(false);
+        setObstacleBtn.setDisable(false);
+        fillAllObstaclesBtn.setDisable(false);
+        removeObstacleBtn.setDisable(false);
+        removeAllObstaclesBtn.setDisable(false);
     }
 
-    @FXML
-    private void fillObstacles(){
-        grid.setType(CellType.OBSTACLE);
+    /**
+     * Fill all obstacles
+     **/
+    public void fillObstacles(){
+        grid.setStatus(Node.Status.BLOCKED);
     }
 
-    @FXML
-    private void removeAllObstacles(){
-        grid.setType(CellType.TRAVERSABLE);
+    /**
+     * Remove all obstacles in the grid
+     **/
+    public void removeAllObstacles(){
+        grid.setStatus(Node.Status.BLANK);
     }
-    @FXML
-    private void handleExit(){
-        Stage stage = (Stage) exitBtn.getScene().getWindow();
+    /**
+     * Back to the main menu
+     **/
+    public void home(){
+        Stage stage = (Stage) homeBtn.getScene().getWindow();
         stage.close();
     }
 
-    @FXML
-    private void handleStartBtn(){
+    /**
+     * Clear the used and checked gridnode
+     **/
+    public void clear(){
         for (int i = 0; i < rowChoiceBox.getValue(); i++){
             for (int j = 0; j < columnChoiceBox.getValue(); j++){
-                Cell cell = grid.getCell(i,j);
-                cell.setOnMouseReleased( e-> {
-                    cell.setOnMouseReleased(null);
-                });
+                if (!grid.getCell(i,j).isStart() && !grid.getCell(i,j).isEnd() && !grid.getCell(i,j).isBlocked()){
+                    System.out.println(i + " : " + j + " : " + grid.getCell(i,j).getStatus());
+                    grid.getCell(i,j).getCell().getStyleClass().removeAll("checked", "used");
+                    grid.getCell(i,j).getCell().getStyleClass().add("traversable");
+                    grid.getCell(i,j).setBlank();
+                }
+            }
+        }
 
-                cell.setOnMouseReleased(e -> {
+    }
+
+    /**
+     * Set Start node
+     **/
+    public void setStart(){
+
+        for (int i = 0; i < rowChoiceBox.getValue(); i++){
+            for (int j = 0; j < columnChoiceBox.getValue(); j++){
+
+                GridNode gridNode = grid.getCell(i,j);
+
+                gridNode.getCell().setOnMouseReleased( e -> gridNode.getCell().setOnMouseReleased(null));
+
+                gridNode.getCell().setOnMouseReleased( e -> {
+                    gridNode.getCell().getStyleClass().removeAll("checked", "used");
                     removeStart();
-                    cell.setStart();
-                    startCell = cell;
-                    System.out.println(startCell.getRow() + " - " + startCell.getColumn());
+                    gridNode.getCell().setStart();
+                    startCell = gridNode;
+                    System.out.println("Start : " + startCell.getCell().getRow() + " - " + startCell.getCell().getColumn());
                 });
             }
         }
     }
 
-    @FXML
-    private void handleEndBtn(){
+    /**
+     * Set End node
+     **/
+    public void setEnd(){
 
         for (int i = 0; i < rowChoiceBox.getValue(); i++){
             for (int j = 0; j < columnChoiceBox.getValue(); j++){
-                Cell cell = grid.getCell(i,j);
+                GridNode gridNode = grid.getCell(i,j);
 
-                cell.setOnMouseReleased( e -> {
-                    cell.setOnMouseReleased(null);
-                });
+                gridNode.getCell().setOnMouseReleased( e -> gridNode.getCell().setOnMouseReleased(null));
 
-                cell.setOnMouseReleased( e -> {
+                gridNode.getCell().setOnMouseReleased( e -> {
+                    gridNode.getCell().getStyleClass().removeAll("checked", "used");
                     removeEnd();
-                    cell.setEnd();
-                    endCell = cell;
-                    System.out.println(endCell.getRow() + " - " + endCell.getColumn());
+                    gridNode.getCell().setEnd();
+                    endCell = gridNode;
+                    System.out.println(endCell.getCell().getRow() + " - " + endCell.getCell().getColumn());
                 });
+            }
+        }
+    }
+
+    /**
+     * Set new Obstacle
+     **/
+    public void setObstacle(){
+
+        for (int i = 0; i < rowChoiceBox.getValue(); i++){
+            for (int j = 0; j < columnChoiceBox.getValue(); j++){
+                GridNode gridNode = grid.getCell(i,j);
+
+                gridNode.getCell().setOnMouseReleased(null);
+                gridNode.getCell().setOnMouseReleased( e -> {
+                    gridNode.getCell().getStyleClass().removeAll("checked", "used");
+                    gridNode.setBlank();
+                    //System.out.println("Before : " + gridNode.getCell().getRow() + " - " + gridNode.getCell().getColumn() + " " + gridNode.getStatus());
+                    gridNode.setBlocked();
+                    gridNode.getCell().setStatus(Node.Status.BLOCKED);
+                });
+            }
+        }
+        //System.out.println("-----");
+
+    }
+
+    /**
+     * Remove an obstacle
+     **/
+    public void removeObstacle(){
+        for (int i = 0; i < rowChoiceBox.getValue(); i++){
+            for (int j = 0; j < columnChoiceBox.getValue(); j++){
+
+                GridNode gridNode = grid.getCell(i,j);
+                gridNode.getCell().setOnMouseReleased(null);
+                if (gridNode.isBlocked()){
+
+                    gridNode.getCell().setOnMouseReleased( e -> {
+                        gridNode.getCell().getStyleClass().removeAll("obstacle");
+                        gridNode.setBlank();
+                        gridNode.getCell().getStyleClass().add("traversable");
+                    });
+
+                }
             }
         }
     }
 
     public void removeStart(){
-        getStartCell().getStyleClass().removeAll("start");
-        getStartCell().setType(CellType.TRAVERSABLE);
+        getStartCell().setBlank();
+        getStartCell().getCell().getStyleClass().removeAll("start", "checked", "used");
+        getStartCell().getCell().setStatus(Node.Status.BLANK);
     }
 
     public void removeEnd(){
-        getEndCell().getStyleClass().removeAll("end");
-        getEndCell().setType(CellType.TRAVERSABLE);
+        getStartCell().setBlank();
+        getEndCell().getCell().getStyleClass().removeAll("end", "checked", "used");
+        getEndCell().getCell().setStatus(Node.Status.BLANK);
     }
 
-    public Cell getStartCell(){
+    public GridNode getStartCell(){
         return startCell;
     }
 
-    public Cell getEndCell(){
+    public GridNode getEndCell(){
         return endCell;
+    }
+
+
+    public void findPath(){
+        clear();
+        showPath();
+        for (int i = 0; i < rowChoiceBox.getValue(); i++){
+            for (int j = 0; j < columnChoiceBox.getValue(); j++){
+                GridNode gridNode = grid.getCell(i,j);
+
+                gridNode.getCell().setOnMouseReleased( e -> gridNode.getCell().setOnMouseReleased(null));
+
+                System.out.println(i + " " + j + " " + gridNode.getStatus());
+
+            }
+        }
+
+        showStepsBtn.setDisable(false);
+
+    }
+
+    public void showPath(){
+
+        int rows = rowChoiceBox.getValue();
+        int columns = columnChoiceBox.getValue();
+//        for (int i = 0; i < rows; i++){
+//            for (int j = 0; j < columns; j++){
+//                System.out.println("Check : " + i + " - " + j + " " + grid.getCell(i,j).getStatus());
+//            }
+//        }
+
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+                if (!grid.getCell(i, j).isEnd() && !grid.getCell(i, j).isStart() && !grid.getCell(i, j).isBlocked()){
+                    grid.getCell(i,j).resetNode();
+                    //System.out.println("Check 2 : " + i + " - " + j + " " + grid.getCell(i,j).getStatus());
+                }
+            }
+        }
+
+
+
+        // node (0, 0)
+        grid.getCell(0,0).setTo(grid.getCell(0,1));
+        grid.getCell(0,0).setTo(grid.getCell(1,0));
+        grid.getCell(0,0).setTo(grid.getCell(1,1));
+
+        // node (r -1, c - 1)
+        grid.getCell(grid.getRows() -1, columns -1).setTo(grid.getCell(rows-1, columns-2));
+        grid.getCell(grid.getRows() -1, columns -1).setTo(grid.getCell(rows-2, columns-1));
+        grid.getCell(grid.getRows() -1, columns -1).setTo(grid.getCell(rows-2, columns-2));
+
+
+        // node (0, c-1)
+        grid.getCell(0, columns-1).setTo(grid.getCell(0, columns-2));
+        grid.getCell(0, columns-1).setTo(grid.getCell(1, columns-2));
+        grid.getCell(0, columns-1).setTo(grid.getCell(1, columns-1));
+
+        // node (r-1, 0)
+        grid.getCell(rows -1, 0).setTo(grid.getCell(rows - 1, 1));
+        grid.getCell(rows -1, 0).setTo(grid.getCell(rows - 2, 0));
+        grid.getCell(rows -1, 0).setTo(grid.getCell(rows - 2, 1));
+
+        for (int i = 1; i < rows-1; i++){
+            grid.getCell(i, 0).setTo(grid.getCell(i-1, 0));
+            grid.getCell(i, 0).setTo(grid.getCell(i-1, 1));
+            grid.getCell(i, 0).setTo(grid.getCell(i, 1));
+            grid.getCell(i, 0).setTo(grid.getCell(i+1, 0));
+            grid.getCell(i, 0).setTo(grid.getCell(i+1, 1));
+
+            grid.getCell(i, columns-1).setTo(grid.getCell(i-1, columns-1));
+            grid.getCell(i, columns-1).setTo(grid.getCell(i-1, columns-2));
+            grid.getCell(i, columns-1).setTo(grid.getCell(i, columns-2));
+            grid.getCell(i, columns-1).setTo(grid.getCell(i+1, columns-1));
+            grid.getCell(i, columns-1).setTo(grid.getCell(i+1, columns-2));
+
+        }
+
+        for (int j = 1; j < columnChoiceBox.getValue()-1; j++){
+            grid.getCell(0, j).setTo(grid.getCell(0, j-1));
+            grid.getCell(0, j).setTo(grid.getCell(1, j-1));
+            grid.getCell(0, j).setTo(grid.getCell(1, j));
+            grid.getCell(0, j).setTo(grid.getCell(1, j+1));
+            grid.getCell(0, j).setTo(grid.getCell(0, j+1));
+
+            grid.getCell(rows-1, j).setTo(grid.getCell(rows-1, j-1));
+            grid.getCell(rows-1, j).setTo(grid.getCell(rows-2, j-1));
+            grid.getCell(rows-1, j).setTo(grid.getCell(rows-2, j));
+            grid.getCell(rows-1, j).setTo(grid.getCell(rows-2, j+1));
+            grid.getCell(rows-1, j).setTo(grid.getCell(rows-1, j+1));
+        }
+
+
+
+        for (int i = 1; i < rowChoiceBox.getValue() -1; i++){
+            for (int j = 1; j < columnChoiceBox.getValue() -1; j++){
+                grid.getCell(i,j).setTo(grid.getCell(i-1, j-1));
+                grid.getCell(i,j).setTo(grid.getCell(i-1, j));
+                grid.getCell(i,j).setTo(grid.getCell(i-1, j+1));
+                grid.getCell(i,j).setTo(grid.getCell(i, j-1),1);
+                grid.getCell(i,j).setTo(grid.getCell(i, j +1),1);
+                grid.getCell(i,j).setTo(grid.getCell(i+1, j-1));
+                grid.getCell(i,j).setTo(grid.getCell(i+1, j));
+                grid.getCell(i,j).setTo(grid.getCell(i+1, j+1));
+            }
+        }
+
+
+//                for (int i = 0; i < rows; i++){
+//            for (int j = 0; j < columns; j++){
+//                System.out.println("Check : " + i + " - " + j + " " + grid.getCell(i,j).getStatus());
+//            }
+//        }
+
+        AStar.AStarSearch(getStartCell(), getEndCell());
+
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+
+                if (grid.getCell(i,j) != getStartCell() && grid.getCell(i,j) != getEndCell() && !grid.getCell(i,j).isBlocked()) {
+//                    if (grid.getCell(i,j).isChecked()){
+//                        grid.getCell(i,j).getCell().getStyleClass().add("checked");
+//                    }
+                    if (grid.getCell(i,j).isUsed()){
+                        grid.getCell(i,j).getCell().getStyleClass().add("used");
+                    }
+
+                }
+
+            }
+        }
+
+
+    }
+
+    public void showSteps() {
+        for (int i = 0; i < rowChoiceBox.getValue(); i++){
+            for (int j = 0; j < columnChoiceBox.getValue(); j++){
+
+                if (grid.getCell(i,j) != getStartCell() && grid.getCell(i,j) != getEndCell() && !grid.getCell(i,j).isBlocked()) {
+                    if (grid.getCell(i,j).isChecked()){
+                       grid.getCell(i,j).getCell().getStyleClass().add("checked");
+                    }
+
+                }
+
+            }
+        }
     }
 
 
