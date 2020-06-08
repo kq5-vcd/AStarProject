@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+
+<SplitPane dividerPositions="0.19365609348914858" maxHeight="1080.0" maxWidth="1920.0" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Graph.GraphDrawController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <Button fx:id="findPathBtn" disable="true" layoutX="43.0" layoutY="511.0" mnemonicParsing="false" onAction="#findPath" prefHeight="35.0" prefWidth="133.0" text="Find Path" AnchorPane.leftAnchor="50.0" />
+            <Button fx:id="createNodeBtn" layoutX="48.0" layoutY="14.0" mnemonicParsing="false" onAction="#createNode" prefHeight="35.0" prefWidth="133.0" text="Create Node" AnchorPane.leftAnchor="50.0" />
+            <Button fx:id="createEdgeBtn" disable="true" layoutX="50.0" layoutY="230.0" mnemonicParsing="false" onAction="#createEdge" prefHeight="35.0" prefWidth="133.0" text="Create Edge" AnchorPane.leftAnchor="50.0" />
+            <Button fx:id="showStepsBtn" disable="true" layoutX="43.0" layoutY="558.0" mnemonicParsing="false" onAction="#showSteps" prefHeight="31.0" prefWidth="133.0" text="Show Steps" AnchorPane.leftAnchor="50.0" />
+            <CheckBox fx:id="singleBox" disable="true" layoutX="50.0" layoutY="283.0" mnemonicParsing="false" onAction="#setSingle" text="Single Direction" AnchorPane.leftAnchor="50.0" />
+            <CheckBox fx:id="doubleBox" disable="true" layoutX="46.0" layoutY="316.0" mnemonicParsing="false" onAction="#setDouble" text="Double Direction" AnchorPane.leftAnchor="50.0" />
+            <Label fx:id="distanceLabel" disable="true" layoutX="50.0" layoutY="352.0" text="Distance:" AnchorPane.leftAnchor="50.0" />
+            <TextField fx:id="distanceField" disable="true" layoutX="50.0" layoutY="380.0" onAction="#setDistance" prefHeight="31.0" prefWidth="133.0" AnchorPane.leftAnchor="50.0" />
+            <TextField fx:id="endDistanceField" disable="true" layoutX="50.0" layoutY="181.0" onAction="#setEndDistance" prefHeight="31.0" prefWidth="133.0" AnchorPane.leftAnchor="50.0" />
+            <Label fx:id="endDistanceLabel" disable="true" layoutX="51.0" layoutY="153.0" prefHeight="21.0" prefWidth="126.0" text="End Distance:" AnchorPane.leftAnchor="51.0" />
+            <CheckBox fx:id="startBox" disable="true" layoutX="51.0" layoutY="424.0" mnemonicParsing="false" onAction="#setStart" prefHeight="21.0" prefWidth="96.0" text="Set Start" AnchorPane.leftAnchor="51.0" />
+            <CheckBox fx:id="endBox" disable="true" layoutX="50.0" layoutY="465.0" mnemonicParsing="false" onAction="#setEnd" text="Set End" AnchorPane.leftAnchor="50.0" />
+            <Button fx:id="moveNodeBtn" disable="true" layoutX="48.0" layoutY="64.0" mnemonicParsing="false" onAction="#moveNode" prefHeight="31.0" prefWidth="133.0" text="Move Node" AnchorPane.leftAnchor="50.0" />
+            <Button fx:id="homeBtn" layoutX="126.0" layoutY="613.0" mnemonicParsing="false" onAction="#rooftop" prefHeight="31.0" prefWidth="72.0" text="Home" />
+            <Button fx:id="resetBtn" layoutX="27.0" layoutY="613.0" mnemonicParsing="false" onAction="#reset" prefHeight="31.0" prefWidth="72.0" text="Reset" />
+            <Button fx:id="deleteNodeBtn" disable="true" layoutX="50.0" layoutY="111.0" mnemonicParsing="false" onAction="#deleteNode" prefHeight="31.0" prefWidth="133.0" text="Delete Node" />
+         </children>
+      </AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <Pane fx:id="canvas" prefHeight="700.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>

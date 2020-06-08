@@ -1,0 +1,39 @@
+/*@charset "ISO-8859-1";*/
+.traversable {
+    -fx-border-color : dodgerblue;
+    -fx-border-width : 0.7fx;
+    -fx-background-color : white;
+}
+
+.obstacle {
+    -fx-border-color : black;
+    -fx-border-width : 0.5fx;
+    -fx-background-color : derive(black, 0.9);
+    -fx-text-fill : white;
+}
+
+.start {
+    -fx-border-color : green;
+    -fx-border-width : 3fx;
+    -fx-background-color : derive(green,0.7);
+}
+
+.end {
+    -fx-border-color : red;
+    -fx-border-width : 3fx;
+    -fx-background-color : derive(red, 0.7);
+}
+
+.checked {
+    -fx-background-color: rgba(0,255,0,0.1)
+}
+
+.used {
+    -fx-border-color : blue;
+    -fx-border-width : 3fx;
+    -fx-background-color : derive(dodgerblue, 0.9);
+}
+
+.label-f{
+	-fx-font-size: 12;
+}

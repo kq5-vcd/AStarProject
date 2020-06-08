@@ -1,0 +1,16 @@
+/*@charset "ISO-8859-1";*/
+#font-face{
+	src: url('ness.ttf');
+}
+
+.label{
+	-fx-font-family: "Ness";
+}
+
+.Diane{
+	-fx-font-size:27px;
+}
+
+.BoJack{
+	-fx-font-size:30px;
+}

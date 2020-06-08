@@ -1,16 +1,15 @@
-module AStarPathFinding {
-	exports AStarGraph;
-	//exports AStarGrid;
-	
-	requires java.desktop;
-	requires javafx.base;
+module AStarProject {
+	exports application;
+	exports Algorithm;
+	exports Exception;
+	exports Graph;
+	exports Grid;
+
 	requires javafx.controls;
 	requires javafx.fxml;
 	requires javafx.graphics;
-	requires javafx.media;
-	requires javafx.swing;
-	requires javafx.swt;
-	requires javafx.web;
 	
-	opens AStarGraph to javafx.fxml;
+	opens application to javafx.fxml;
+	opens Graph to javafx.fxml;
+	opens Grid to javafx.fxml;
 }
