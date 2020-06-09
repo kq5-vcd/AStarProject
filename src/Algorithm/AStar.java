@@ -1,16 +1,16 @@
-package Algorithm;
+package algorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import Node.Node;
+import node.ANode;
 
 public class AStar {
 	
-    public static void reconstructPath(Node node) {
-    	List<Node> path = new ArrayList<Node>();
+    public static void reconstructPath(ANode node) {
+    	List<ANode> path = new ArrayList<ANode>();
     	
     	while(true) {
     		path.add(0, node);
@@ -25,19 +25,19 @@ public class AStar {
     		node = node.getGoFrom();
     	}
     	
-    	for(Node step: path) {
+    	for(ANode step: path) {
     		System.out.print(step + " ");
     	}
     	System.out.println();
     }
     
-    public static List<Node> expandNode(Node node, Node end) {
-    	Set<Node> paths = node.getTo();
-    	List<Node> expandedPaths = new ArrayList<Node>();
+    public static List<ANode> expandNode(ANode node, ANode end) {
+    	Set<ANode> paths = node.getTo();
+    	List<ANode> expandedPaths = new ArrayList<ANode>();
     	
     	node.check();
     	
-    	for(Node path: paths) {
+    	for(ANode path: paths) {
     		boolean add = false;
     		path.setEndDistance(end);
     		
@@ -57,17 +57,17 @@ public class AStar {
     	return expandedPaths;
     }
     
-    public static void AStarSearch(Node start, Node end) {
+    public static void AStarSearch(ANode start, ANode end) {
     	if(start.equals(end)) {
     		reconstructPath(start);
     	} else {
-    		List<Node> queue = new ArrayList<Node>();
+    		List<ANode> queue = new ArrayList<ANode>();
     		start.setStart();
     		end.setEnd();
         	
         	queue.add(start);
         	while(true) {
-        		Node node = queue.get(0);
+        		ANode node = queue.get(0);
         		//System.out.println("A* " + node);
         		queue.remove(0);
         		

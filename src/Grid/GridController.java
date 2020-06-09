@@ -1,4 +1,4 @@
-package Grid;
+package grid;
 
 
 import javafx.fxml.FXML;
@@ -6,8 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.StackPane;
-import Algorithm.AStar;
-import Node.Node;
+import node.*;
+import node.ANode.Status;
+import algorithm.AStar;
 import application.MainApp;
 
 import java.net.URL;
@@ -88,7 +89,7 @@ public class GridController implements Initializable {
             for (int i = 0; i < rows; i++){
                 for (int j = 0; j < columns; j++){
                     String text = "";
-                    GridNode gridNode = new GridNode(text, j , i, Node.Status.BLANK);
+                    GridNode gridNode = new GridNode(text, j , i, ANode.Status.BLANK);
                     gridNode.setBlank();
                     grid.add(gridNode, j, i);
                 }
@@ -99,7 +100,7 @@ public class GridController implements Initializable {
             for (int i = 0; i < rows; i++){
                 for (int j = 0; j < columns; j++){
                     String text = "";
-                    GridNode gridNode = new GridNode(text, j, i, Node.Status.BLANK);
+                    GridNode gridNode = new GridNode(text, j, i, ANode.Status.BLANK);
                     gridNode.setBlank();
                     grid.add(gridNode, j, i);
                 }
@@ -129,20 +130,39 @@ public class GridController implements Initializable {
         fillAllObstaclesBtn.setDisable(false);
         removeObstacleBtn.setDisable(false);
         removeAllObstaclesBtn.setDisable(false);
+        showStepsBtn.setDisable(true);
     }
 
     /**
      * Fill all obstacles
      **/
     public void fillObstacles(){
-        grid.setStatus(Node.Status.BLOCKED);
+    	for (int i = 0; i < rowChoiceBox.getValue(); i++) {
+    		for (int j = 0; j < columnChoiceBox.getValue(); j++) {
+    			if (!grid.getCell(i, j).isStart() && !grid.getCell(i, j).isEnd()) {
+    				
+    				grid.getCell(i, j).getCell().getStyleClass().removeAll("checked", "used");
+    				grid.getCell(i,j).getCell().setTextF("");
+    				grid.getCell(i,j).setStatus(Status.BLOCKED);
+    				grid.getCell(i, j).getCell().getStyleClass().add("obstacle");
+    			}
+    		}
+    	}
+        //grid.setStatus(Node.Status.BLOCKED);
     }
 
     /**
      * Remove all obstacles in the grid
      **/
     public void removeAllObstacles(){
-        grid.setStatus(Node.Status.BLANK);
+    	for (int i = 0; i < rowChoiceBox.getValue(); i++) {
+    		for (int j = 0; j < columnChoiceBox.getValue(); j++) {
+    			grid.getCell(i,j).getCell().getStyleClass().removeAll("obstacle");
+    			grid.getCell(i,j).getCell().getStyleClass().add("traversable");
+    			grid.getCell(i, j).setStatus(Status.BLANK);
+    		}
+    	}
+        //grid.setStatus(Node.Status.BLANK);
     }
     /**
      * Back to the main menu
@@ -230,14 +250,15 @@ public class GridController implements Initializable {
         for (int i = 0; i < rowChoiceBox.getValue(); i++){
             for (int j = 0; j < columnChoiceBox.getValue(); j++){
                 GridNode gridNode = grid.getCell(i,j);
-
+                grid.getCell(i,j).getCell().setTextF("");
                 gridNode.getCell().setOnMouseReleased(null);
                 gridNode.getCell().setOnMouseReleased( e -> {
+                	
                     gridNode.getCell().getStyleClass().removeAll("checked", "used");
                     gridNode.setBlank();
                     //System.out.println("Before : " + gridNode.getCell().getRow() + " - " + gridNode.getCell().getColumn() + " " + gridNode.getStatus());
                     gridNode.setBlocked();
-                    gridNode.getCell().setStatus(Node.Status.BLOCKED);
+                    gridNode.getCell().setStatus(ANode.Status.BLOCKED);
                 });
             }
         }
@@ -270,13 +291,13 @@ public class GridController implements Initializable {
     public void removeStart(){
         getStartCell().setBlank();
         getStartCell().getCell().getStyleClass().removeAll("start", "checked", "used");
-        getStartCell().getCell().setStatus(Node.Status.BLANK);
+        getStartCell().getCell().setStatus(ANode.Status.BLANK);
     }
 
     public void removeEnd(){
         getStartCell().setBlank();
         getEndCell().getCell().getStyleClass().removeAll("end", "checked", "used");
-        getEndCell().getCell().setStatus(Node.Status.BLANK);
+        getEndCell().getCell().setStatus(ANode.Status.BLANK);
     }
 
     public GridNode getStartCell(){
@@ -320,6 +341,7 @@ public class GridController implements Initializable {
             for (int j = 0; j < columns; j++){
                 if (!grid.getCell(i, j).isEnd() && !grid.getCell(i, j).isStart() && !grid.getCell(i, j).isBlocked()){
                     grid.getCell(i,j).resetNode();
+                    grid.getCell(i,j).getCell().setTextF("");
                     //System.out.println("Check 2 : " + i + " - " + j + " " + grid.getCell(i,j).getStatus());
                 }
             }

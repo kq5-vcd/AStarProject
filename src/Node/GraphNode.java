@@ -1,4 +1,4 @@
-package Node;
+package node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class GraphNode extends Node {
+public class GraphNode extends ANode {
 	
 	Circle point;
 	Text info;

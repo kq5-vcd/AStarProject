@@ -1,21 +1,20 @@
-package Grid;
+package grid;
 
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import Node.Node;
+import node.ANode;
 public class Cell extends StackPane {
 
     double column;
     double row;
     String text;
-    Node.Status status;
+    ANode.Status status;
     Label labelF;
 
     /**
      * The constructor
      **/
-    public Cell(String text, double column, double row, Node.Status status){
+    public Cell(String text, double column, double row, ANode.Status status){
         this.column = column;
         this.row = row;
         this.text = text;
@@ -69,7 +68,7 @@ public class Cell extends StackPane {
         getStyleClass().add("end");
     }
 
-    public void setStatus(Node.Status status){
+    public void setStatus(ANode.Status status){
         this.status = status;
         updateStatus();
     }

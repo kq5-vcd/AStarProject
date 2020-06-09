@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane maxHeight="675.0" maxWidth="1200.0" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Grid.GridController">
+<BorderPane maxHeight="675.0" maxWidth="1200.0" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="grid.GridController">
    <center>
       <StackPane fx:id="gridPane" maxHeight="600.0" maxWidth="1000.0" prefHeight="600.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
    </center>

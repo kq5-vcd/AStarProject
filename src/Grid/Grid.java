@@ -1,7 +1,7 @@
-package Grid;
+package grid;
 
 import javafx.scene.layout.Pane;
-import Node.Node;
+import node.*;
 public class Grid extends Pane {
 
     int rows;
@@ -57,7 +57,7 @@ public class Grid extends Pane {
     /**
      * Set the type of the cell
      **/
-    public void setStatus(Node.Status status){
+    public void setStatus(ANode.Status status){
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 cells[i][j].getCell().setStatus(status);

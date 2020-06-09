@@ -1,12 +1,10 @@
-package Node;
+package node;
 
 
-import Grid.Cell;
-import Node.Node;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import grid.Cell;
+import node.ANode;
 
-public class GridNode extends Node {
+public class GridNode extends ANode {
 
     Cell cell;
     String text;

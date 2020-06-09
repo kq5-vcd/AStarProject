@@ -1,11 +1,10 @@
-package Graph;
+package graph;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import Exception.PopUp;
-import Algorithm.AStar;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -15,8 +14,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import Node.GraphNode;
+import node.GraphNode;
+import algorithm.AStar;
 import application.MainApp;
+import exception.PopUp;
 
 public class GraphDrawController implements Initializable {
 	
